@@ -1,12 +1,12 @@
-# idiosyncrasy
+# idio
 
-`idiosyncrasy` is a koa2-based web-server with some pre-installed middleware.
+`idio` is a koa2-based web-server with some pre-installed middleware.
 Its purpose is to be able to quickly create a server with basic functionality.
 
 ## Example
 
 ```js
-// ./bin/idiosyncrasy
+// ./bin/idio
 #!/usr/bin/env node
 
 const { join } = require('path')
@@ -44,7 +44,7 @@ startApp({
 ```
 
 ```bash
-NODE_DEBUG=idio ./bin/idiosyncrasy
+NODE_DEBUG=idio ./bin/idio
 ```
 
 ```fs

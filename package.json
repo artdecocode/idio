@@ -1,16 +1,16 @@
 {
-  "name": "idiosyncrasy",
+  "name": "idio",
   "version": "0.1.0",
   "description": "A web-server in koa2 with MongoDB connection",
   "main": "src/index.js",
   "scripts": {
     "test": "zoroaster test/spec",
     "test-watch": "zoroaster test/spec --watch",
-    "start": "node bin/idiosyncrasy"
+    "start": "node bin/idio"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Sobesednik/idiosyncrasy.git"
+    "url": "git://github.com/Sobesednik/idio.git"
   },
   "keywords": [
     "mnp"
@@ -18,9 +18,9 @@
   "author": "Anton <anton@sobesednik.media>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Sobesednik/idiosyncrasy/issues"
+    "url": "https://github.com/Sobesednik/idio/issues"
   },
-  "homepage": "https://github.com/Sobesednik/idiosyncrasy#readme",
+  "homepage": "https://github.com/Sobesednik/idio#readme",
   "devDependencies": {
     "zoroaster": "0.4.4"
   },
