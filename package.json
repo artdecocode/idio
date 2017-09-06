@@ -2,7 +2,7 @@
   "name": "idio",
   "version": "0.1.0",
   "description": "A web-server in koa2 with MongoDB connection",
-  "main": "src/index.js",
+  "main": "src/lib/start-app.js",
   "scripts": {
     "test": "zoroaster test/spec",
     "test-watch": "zoroaster test/spec --watch",

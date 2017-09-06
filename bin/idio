@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const { join } = require('path')
-const startApp = require('../src/lib/start-app')
+const startApp = require('..')
 const uploadDir = join(__dirname, '../upload')
 
 const sessionKey = 'secret-key'
