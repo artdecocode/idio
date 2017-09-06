@@ -1,5 +1,7 @@
 # idio
 
+[![npm version](https://badge.fury.io/js/idio.svg)](https://badge.fury.io/js/idio)
+
 `idio` is a koa2-based web-server with some pre-installed middleware.
 Its purpose is to be able to quickly create a server with basic functionality.
 
