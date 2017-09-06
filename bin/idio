@@ -4,7 +4,7 @@ const startApp = require('../src/lib/start-app')
 const uploadDir = join(__dirname, '../upload')
 
 const sessionKey = 'secret-key'
-const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost:27017/idio'
+const DATABASE_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/idio'
 const PORT = process.env.PORT || 5000
 
 startApp({
