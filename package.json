@@ -1,11 +1,12 @@
 {
   "name": "idiosyncrasy",
   "version": "0.1.0",
-  "description": "A new package created with mnp",
+  "description": "A web-server in koa2 with MongoDB connection",
   "main": "src/index.js",
   "scripts": {
     "test": "zoroaster test/spec",
-    "test-watch": "zoroaster test/spec --watch"
+    "test-watch": "zoroaster test/spec --watch",
+    "start": "node bin/idiosyncrasy"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,16 @@
   "homepage": "https://github.com/Sobesednik/idiosyncrasy#readme",
   "devDependencies": {
     "zoroaster": "0.4.4"
+  },
+  "dependencies": {
+    "koa": "2.3.0",
+    "koa-bodyparser": "4.2.0",
+    "koa-csrf": "3.0.6",
+    "koa-logger": "3.0.1",
+    "koa-multer": "1.0.2",
+    "koa-router": "7.2.1",
+    "koa-session": "5.5.0",
+    "mongoose": "4.11.10",
+    "wrote": "0.6.1"
   }
 }

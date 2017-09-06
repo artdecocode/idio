@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+const { join } = require('path')
+const startApp = require('../src/lib/start-app')
+const uploadDir = join(__dirname, '../upload')
+
+const sessionKey = 'secret-key'
+const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost:27017/idio'
+const PORT = process.env.PORT || 5000
+
+startApp({
+    databaseURL: DATABASE_URL,
+    port: PORT,
+    middleware: {
+        session: { config: { keys: [sessionKey], config: { httpOnly: false } } },
+        multer: { config: { config: { dest: uploadDir } } }, // will create uploadDir
+        csrf: { config: { config: { invalidTokenStatusCode: 403 } } },
+        bodyparser: { config: { config: { enableTypes: ['json'] } } },
+        checkauth: { },
+        logger: { use: true }, // will always use this middleware
+        // ----
+        custom: { function: (app, config) => async (ctx, next) => {
+            await next()
+            console.log(`${config.text}: ${ctx.request.ip}`)
+        }, config: { text: 'ip' }, use: true },
+        customMiddleware: {
+            function: async(app, config) => {
+                app.context.usingFunction = true
+
+                return async(ctx, next) => {
+                    await next()
+                    if (config.debug) {
+                        console.error(ctx.app.context.usingFunction)
+                    }
+                }
+            },
+            config: { debug: process.env.NODE_DEBUG === 'idio' },
+            use: false,
+        },
+    },
+})
+.then((res) => {
+    const { url, app, router, middleware } = res
+    router.get('/', middleware.session, async (ctx) => {
+        const n = ctx.session.views || 1
+        ctx.session.views = n + 1
+        ctx.body = `${n} views`
+    })
+    const routes = router.routes()
+    console.log(url)
+    app.use(routes)
+})
+.catch(console.error)
