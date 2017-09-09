@@ -17,7 +17,7 @@ async function connectToDatabase(url) {
 
 /**
  * @typedef {Object} Config
- * @property {string} databaseURL
+ * @property {string} [databaseURL='mongodb://localhost:27017']
  * @property {number} [port=5000]
  */
 
@@ -26,7 +26,8 @@ async function connectToDatabase(url) {
  * @param {Config} config configuration object
  */
 async function startApp(config) {
-    const db = await connectToDatabase(config.databaseURL)
+    const databaseUrl = config.databaseURL || 'mongodb://localhost:27017'
+    const db = await connectToDatabase(databaseUrl)
 
     // disconnect from mongo when running nodemon
     process.once('SIGUSR2', async () => {
