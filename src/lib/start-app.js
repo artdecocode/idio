@@ -1,9 +1,12 @@
 const debuglog = require('util').debuglog('idio')
+const enableDestroy = require('server-destroy');
+const router = require('koa-router')()
 const Database = require('../services/database')
 const createApp = require('./create-app')
-const router = require('koa-router')()
 
 const DEFAULT_PORT = 5000
+const DEFAULT_HOST = '0.0.0.0'
+const DEFAULT_MONGO = 'mongodb://localhost:27017'
 
 async function connectToDatabase(url) {
     debuglog('connecting to the database')
@@ -14,6 +17,24 @@ async function connectToDatabase(url) {
     return db
 }
 
+async function disconnectFromDatabase(db) {
+    await db.disconnect()
+    debuglog('disconnected from the database')
+}
+
+async function destroy(server) {
+    await new Promise((resolve) => {
+        server.on('close', resolve)
+        server.destroy()
+    })
+    debuglog('destroyed the server')
+}
+
+function listen(app, port, hostname = '0.0.0.0') {
+    return new Promise((resolve) => {
+        const server = app.listen(port, hostname, () => resolve(server))
+    })
+}
 
 /**
  * @typedef {Object} Config
@@ -22,29 +43,41 @@ async function connectToDatabase(url) {
  */
 
 /**
- * Start the server.
- * @param {Config} config configuration object
+ * @typedef {Object} App
+ * @property {function} destroy Kill the server and disconnect from the database
  */
-async function startApp(config) {
-    const databaseUrl = config.databaseURL || 'mongodb://localhost:27017'
+
+/**
+ * Start the server.
+ * @param {Config} [config] configuration object
+ * @returns {{app, middleware, router, url}}
+ */
+async function startApp(config = {}) {
+    const databaseUrl = config.databaseURL || DEFAULT_MONGO
+    const port = Number.isInteger(config.port) ? config.port : DEFAULT_PORT
+    const host = config.host || DEFAULT_HOST
+
     const db = await connectToDatabase(databaseUrl)
 
-    // disconnect from mongo when running nodemon
+    // close all connections when running nodemon
     process.once('SIGUSR2', async () => {
-        await db.disconnect()
+        await app.destroy()
         process.kill(process.pid, 'SIGUSR2')
     })
 
     const appMeta = await createApp(config, db)
     const { app } = appMeta
 
-    const port = config.port || DEFAULT_PORT
+    const server = await listen(app, port, host)
 
-    await new Promise((resolve) => {
-        app.listen(port, resolve)
-    })
+    enableDestroy(server)
+    app.destroy = () => Promise.all([
+        disconnectFromDatabase(db),
+        destroy(server),
+    ])
+    const serverPort = server.address().port
 
-    const url = `http://localhost:${port}`
+    const url = `http://localhost:${serverPort}`
 
     return Object.assign(appMeta, { router, url })
 }

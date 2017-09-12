@@ -162,6 +162,12 @@ startApp({
 
 Congrats, you have your Koa2 server with database in `ctx.app.context`.
 
+## destroy Method
+
+An app can be destroyed (with all connections killed) by using `app.destroy`
+method. This can be useful for testing - a database connection and http server
+will be stopped.
+
 ## Database API
 
 _towrite_

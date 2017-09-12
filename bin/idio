@@ -38,15 +38,16 @@ startApp({
         },
     },
 })
-.then((res) => {
-    const { url, app, router, middleware } = res
-    router.get('/', middleware.session, async (ctx) => {
-        const n = ctx.session.views || 1
-        ctx.session.views = n + 1
-        ctx.body = `${n} views`
+    .then((res) => {
+        const { url, app, router, middleware } = res
+        console.log(app)
+        router.get('/', middleware.session, async (ctx) => {
+            const n = ctx.session.views || 1
+            ctx.session.views = n + 1
+            ctx.body = `${n} views`
+        })
+        const routes = router.routes()
+        console.log(url)
+        app.use(routes)
     })
-    const routes = router.routes()
-    console.log(url)
-    app.use(routes)
-})
-.catch(console.error)
+    .catch(console.error)
