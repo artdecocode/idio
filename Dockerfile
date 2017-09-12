@@ -7,4 +7,5 @@ ADD . /app
 WORKDIR /app
 RUN npm install --production
 
+ENV NODE_ENV production
 CMD ["npm", "run", "start"]
