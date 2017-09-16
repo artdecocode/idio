@@ -1,4 +1,4 @@
-## 0.1.0 (22 May)
+## 0.1.0 (17 September 2017)
 
-- Create `my-new-package`: a package created with `mnp`
-- [repo]: `test`, `src`
+- Create `idio`: a package created with `mnp`
+- [repo]: `test`, `src`, `bin`
