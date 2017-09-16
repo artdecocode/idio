@@ -46,8 +46,11 @@ startApp({
             ctx.session.views = n + 1
             ctx.body = `${n} views`
         })
+        router.get('/ip', async (ctx) => {
+            const s = `your ip: ${ctx.request.ip}`
+            ctx.body = s
+        })
         const routes = router.routes()
-        console.log(url)
         app.use(routes)
     })
     .catch(console.error)
