@@ -12,7 +12,7 @@ Its purpose is to be able to quickly create a server with basic functionality.
 #!/usr/bin/env node
 
 const { join } = require('path')
-const startApp = require('../src/lib/start-app')
+const startApp = require('idio')
 const uploadDir = join(__dirname, '../upload')
 
 const sessionKey = 'secret-key'
