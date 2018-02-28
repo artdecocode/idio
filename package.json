@@ -25,18 +25,18 @@
   },
   "homepage": "https://github.com/Sobesednik/idio#readme",
   "devDependencies": {
-    "zoroaster": "0.4.6"
+    "zoroaster": "0.5.3"
   },
   "dependencies": {
-    "koa": "2.3.0",
+    "koa": "2.5.0",
     "koa-bodyparser": "4.2.0",
     "koa-csrf": "3.0.6",
-    "koa-logger": "3.0.1",
+    "koa-logger": "3.1.0",
     "koa-multer": "1.0.2",
-    "koa-router": "7.2.1",
-    "koa-session": "5.5.0",
-    "mongoose": "4.11.10",
+    "koa-router": "7.4.0",
+    "koa-session": "5.8.1",
+    "mongoose": "5.0.7",
     "server-destroy": "1.0.1",
-    "wrote": "0.6.1"
+    "wrote": "1.4.0"
   }
 }
