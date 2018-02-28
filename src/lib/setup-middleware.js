@@ -3,7 +3,7 @@ const CSRF = require('koa-csrf')
 const multer = require('koa-multer')
 const bodyParser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const wrote = require('wrote')
+const { ensurePath } = require('wrote')
 const { join, resolve } = require('path')
 const checkAuth = require('./check-auth')
 
@@ -29,7 +29,7 @@ async function setupMulter(app, config) {
     }
     const resolvedDir = resolve(config.config.dest)
     const uploadDirTestPath = join(resolvedDir, 'test.data')
-    await wrote.ensurePath(uploadDirTestPath)
+    await ensurePath(uploadDirTestPath)
     const upload = multer(config.config)
     return upload
 }
