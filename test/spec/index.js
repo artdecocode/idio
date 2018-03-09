@@ -1,24 +1,22 @@
-const assert = require('assert')
-const http = require('http')
+const { equal } = require('zoroaster/assert')
+const rqt = require('rqt')
 const idio = require('../../')
 
 const idioTestSuite = {
-  'should start a server': async () => {
-    const res = await idio({
+  async 'should start a server'() {
+    const server = await idio({
       port: 0,
     })
-    const { app, url, router } = res
-    router.get('/', async (ctx, next) => {
-      ctx.body = 'hello world'
+    const { app, url, router } = server
+    const body = 'hello world'
+    router.get('/', async (ctx) => {
+      ctx.body = body
     })
     app.use(router.routes())
-    const testRes = await new Promise((resolve, reject) => {
-      http.get(`${url}`, resolve).on('error', reject)
-    })
-    const { statusCode } = testRes
-    assert.equal(statusCode, 200)
+    const res = await rqt(url)
+    equal(res, body)
 
-    await res.app.destroy()
+    await app.destroy()
   },
 }
 

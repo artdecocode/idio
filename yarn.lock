@@ -1179,6 +1179,13 @@ rndm@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/rndm/-/rndm-1.2.0.tgz#f33fe9cfb52bbfd520aa18323bc65db110a1b76c"
 
+rqt@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rqt/-/rqt-1.0.1.tgz#bccf77068d12ca300df7b895adb314db9c08f643"
+  dependencies:
+    catchment "1.0.0"
+    erotic "0.2.0"
+
 run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
