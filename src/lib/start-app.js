@@ -1,8 +1,9 @@
 const debuglog = require('util').debuglog('idio')
 const enableDestroy = require('server-destroy')
-const router = require('koa-router')()
+const Router = require('koa-router')
 const Database = require('../services/database')
 const createApp = require('./create-app')
+const { initRoutes } = require('./routes')
 
 const DEFAULT_PORT = 5000
 const DEFAULT_HOST = '0.0.0.0'
@@ -40,6 +41,8 @@ function listen(app, port, hostname = '0.0.0.0') {
  * @typedef {Object} Config
  * @property {string} [databaseURL='mongodb://localhost:27017']
  * @property {number} [port=5000]
+ * @property {number} [host=0.0.0.0]
+ * @property {SetupRouter} setupRouter
  */
 
 /**
@@ -48,16 +51,41 @@ function listen(app, port, hostname = '0.0.0.0') {
  */
 
 /**
+ * @typedef {Object} ReadConf
+ * @property {function} [filter] A function used to filter files found in routes directory.
+ * @property {boolean} [defaultImports=false] Whether routes are written with ES6 modules and export
+ * a default function
+ */
+
+/**
+ * @typedef {Object} SetupRouter
+ * @property {string} dir Path to the routes directory
+ * @property {object} middleware
+ * @property {ReadConf} readConf
+ * @property {object} aliases
+ *
+ */
+
+
+/**
  * Start the server.
  * @param {Config} [config] configuration object
  * @returns {{app, middleware, router, url}}
  */
 async function startApp(config = {}) {
-  const databaseUrl = config.databaseURL || DEFAULT_MONGO
-  const port = Number.isInteger(config.port) ? config.port : DEFAULT_PORT
-  const host = config.host || DEFAULT_HOST
+  const {
+    databaseURL = DEFAULT_MONGO,
+    port = DEFAULT_PORT,
+    host = DEFAULT_HOST,
+    setupRouter: {
+      dir: routesDir,
+      middleware,
+      readConf,
+      aliases,
+    } = {},
+  } = config
 
-  const db = await connectToDatabase(databaseUrl)
+  const db = await connectToDatabase(databaseURL)
 
   // close all connections when running nodemon
   process.once('SIGUSR2', async () => {
@@ -78,6 +106,16 @@ async function startApp(config = {}) {
   const serverPort = server.address().port
 
   const url = `http://localhost:${serverPort}`
+
+  const router = Router()
+
+  if (routesDir) {
+    await initRoutes(routesDir, router, {
+      middleware,
+      readConf,
+      aliases,
+    })
+  }
 
   return Object.assign(appMeta, { router, url })
 }
