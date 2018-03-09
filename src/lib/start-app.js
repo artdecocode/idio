@@ -3,7 +3,6 @@ const enableDestroy = require('server-destroy')
 const Router = require('koa-router')
 const Database = require('../services/database')
 const createApp = require('./create-app')
-const { initRoutes } = require('./routes')
 
 const DEFAULT_PORT = 5000
 const DEFAULT_HOST = '0.0.0.0'
@@ -42,7 +41,6 @@ function listen(app, port, hostname = '0.0.0.0') {
  * @property {string} [databaseURL='mongodb://localhost:27017']
  * @property {number} [port=5000]
  * @property {number} [host=0.0.0.0]
- * @property {SetupRouter} setupRouter
  */
 
 /**
@@ -50,21 +48,6 @@ function listen(app, port, hostname = '0.0.0.0') {
  * @property {function} destroy Kill the server and disconnect from the database
  */
 
-/**
- * @typedef {Object} ReadConf
- * @property {function} [filter] A function used to filter files found in routes directory.
- * @property {boolean} [defaultImports=false] Whether routes are written with ES6 modules and export
- * a default function
- */
-
-/**
- * @typedef {Object} SetupRouter
- * @property {string} dir Path to the routes directory
- * @property {object} middleware
- * @property {ReadConf} readConf
- * @property {object} aliases
- *
- */
 
 
 /**
@@ -77,12 +60,6 @@ async function startApp(config = {}) {
     databaseURL = DEFAULT_MONGO,
     port = DEFAULT_PORT,
     host = DEFAULT_HOST,
-    setupRouter: {
-      dir: routesDir,
-      middleware,
-      readConf,
-      aliases,
-    } = {},
   } = config
 
   const db = await connectToDatabase(databaseURL)
@@ -108,14 +85,6 @@ async function startApp(config = {}) {
   const url = `http://localhost:${serverPort}`
 
   const router = Router()
-
-  if (routesDir) {
-    await initRoutes(routesDir, router, {
-      middleware,
-      readConf,
-      aliases,
-    })
-  }
 
   return Object.assign(appMeta, { router, url })
 }

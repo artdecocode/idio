@@ -2,7 +2,7 @@
   "name": "idio",
   "version": "0.1.2",
   "description": "A web-server in koa2 with MongoDB connection",
-  "main": "src/lib/start-app.js",
+  "main": "src",
   "scripts": {
     "test": "zoroaster test/spec",
     "test-watch": "zoroaster test/spec --watch",
@@ -13,7 +13,7 @@
     "url": "git://github.com/Sobesednik/idio.git"
   },
   "keywords": [
-    "mnp"
+    "koa2"
   ],
   "engines": {
     "node": ">=7.6.0"

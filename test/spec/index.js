@@ -2,57 +2,57 @@ const { equal } = require('zoroaster/assert')
 const rqt = require('rqt')
 const bodyparser = require('koa-bodyparser')
 const context = require('../context')
-const idio = require('../..')
+const { startApp, initRoutes } = require('../..')
 
 const idioTestSuite = {
   context,
-  async 'should start a server'() {
-    const server = await idio({
-      port: 0,
-    })
-    const { app, url, router } = server
-    const body = 'hello world'
-    router.get('/', async (ctx) => {
-      ctx.body = body
-    })
-    app.use(router.routes())
-    const res = await rqt(url)
-    equal(res, body)
+  // async 'should start a server'() {
+  //   const server = await startApp({
+  //     port: 0,
+  //   })
+  //   const { app, url, router } = server
+  //   const body = 'hello world'
+  //   router.get('/', async (ctx) => {
+  //     ctx.body = body
+  //   })
+  //   app.use(router.routes())
+  //   const res = await rqt(url)
+  //   equal(res, body)
 
-    await app.destroy()
-  },
+  //   await app.destroy()
+  // },
   async 'should use routes'({ routesDir }) {
     const body = bodyparser()
     let getMiddlewareCalls = 0
-    const server = await idio({
+    const server = await startApp({
       port: 0,
-      setupRouter: {
-        dir: routesDir,
-        aliases: {
-          get: {
-            '/test': ['/alias'],
-          },
-          post: {
-            '/test': ['/alias'],
-          },
+    })
+    const { app, url, router } = server
+
+    await initRoutes(routesDir, router, {
+      aliases: {
+        get: {
+          '/test': ['/alias'],
         },
-        middleware: {
-          get(route) {
-            return [
-              async (ctx, next) => {
-                getMiddlewareCalls += 1
-                await next()
-              },
-              route,
-            ]
-          },
-          post(route) {
-            return [body, route]
-          },
+        post: {
+          '/test': ['/alias'],
+        },
+      },
+      middleware: {
+        get(route) {
+          return [
+            async (ctx, next) => {
+              getMiddlewareCalls += 1
+              await next()
+            },
+            route,
+          ]
+        },
+        post(route) {
+          return [body, route]
         },
       },
     })
-    const { app, url, router } = server
     app.use(router.routes())
 
     const get = await rqt(`${url}/test`)
@@ -82,38 +82,36 @@ const idioTestSuite = {
   async 'should use routes (modules)'({ routesDirModules }) {
     const body = bodyparser()
     let getMiddlewareCalls = 0
-    const server = await idio({
+    const server = await startApp({
       port: 0,
-      setupRouter: {
-        readConf: {
-          defaultImports: true,
+    })
+    const { app, url, router } = server
+
+    await initRoutes(routesDirModules, router, {
+      defaultImports: true,
+      aliases: {
+        get: {
+          '/test': ['/alias'],
         },
-        dir: routesDirModules,
-        aliases: {
-          get: {
-            '/test': ['/alias'],
-          },
-          post: {
-            '/test': ['/alias'],
-          },
+        post: {
+          '/test': ['/alias'],
         },
-        middleware: {
-          get(route) {
-            return [
-              async (ctx, next) => {
-                getMiddlewareCalls += 1
-                await next()
-              },
-              route,
-            ]
-          },
-          post(route) {
-            return [body, route]
-          },
+      },
+      middleware: {
+        get(route) {
+          return [
+            async (ctx, next) => {
+              getMiddlewareCalls += 1
+              await next()
+            },
+            route,
+          ]
+        },
+        post(route) {
+          return [body, route]
         },
       },
     })
-    const { app, url, router } = server
     app.use(router.routes())
 
     const get = await rqt(`${url}/test`)

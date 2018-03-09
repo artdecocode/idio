@@ -54,12 +54,26 @@ const readRoutes = async (dir, {
   return methods
 }
 
+/**
+ * @typedef {Object} InitConfig
+ * @property {function} [filter] A function used to filter files found in routes directory.
+ * @property {boolean} [defaultImports=false] Whether routes are written with ES6 modules and export
+ * a default function
+ */
+
+/**
+ *
+ * @param {string} dir Path to the routes folder
+ * @param {*} router Instance of koa-router
+ * @param {InitConfig} param2
+ */
 const initRoutes = async (dir, router, {
   middleware = {},
-  readConf = {},
+  filter,
+  defaultImports,
   aliases = {},
 } = {}) => {
-  const methods = await readRoutes(dir, readConf)
+  const methods = await readRoutes(dir, { filter, defaultImports })
   Object.keys(methods).forEach((method) => {
     const routes = methods[method]
     const getMiddleware = middleware[method]

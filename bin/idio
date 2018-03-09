@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-const { join } = require('path')
-const startApp = require('..')
-const uploadDir = join(__dirname, '../upload')
+const { resolve } = require('path')
+const { startApp, initRoutes } = require('..')
+
+const uploadDir = resolve(__dirname, '../upload')
+const routesDir = resolve(__dirname, '../routes')
 
 const sessionKey = process.env.SECRET_KEY || 'secret-key'
 const DATABASE_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/idio'
@@ -43,19 +45,21 @@ const PORT = process.env.PORT || 5000;
       },
     })
 
-    const { url, app, router, middleware } = res
+    const { url, app, router, middleware: { session } } = res
+
+    await initRoutes(routesDir, router, {
+      aliases: {
+        get: {
+          '/index': ['/'],
+        },
+      },
+      middleware: {
+        get: (route) => [session, route],
+      },
+    })
 
     console.log(url)
 
-    router.get('/', middleware.session, async (ctx) => {
-      const n = ctx.session.views || 1
-      ctx.session.views = n + 1
-      ctx.body = `${n} views`
-    })
-    router.get('/ip', async (ctx) => {
-      const s = `your ip: ${ctx.request.ip}`
-      ctx.body = s
-    })
     const routes = router.routes()
     app.use(routes)
   } catch (err) {
