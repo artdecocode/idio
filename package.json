@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/Sobesednik/idio#readme",
   "devDependencies": {
+    "eslint": "^4.18.2",
     "zoroaster": "0.5.3"
   },
   "dependencies": {

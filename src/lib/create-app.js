@@ -3,21 +3,21 @@ const Koa = require('koa')
 const setupMiddleware = require('./setup-middleware')
 
 async function createApp(config, database) {
-    const app = new Koa()
+  const app = new Koa()
 
-    app.context.database = database
-    app.context.config = config
+  app.context.database = database
+  app.context.config = config
 
-    const middleware = await setupMiddleware(config.middleware, app)
+  const middleware = await setupMiddleware(config.middleware, app)
 
-    if (app.env === 'production') {
-        app.proxy = true
-    }
+  if (app.env === 'production') {
+    app.proxy = true
+  }
 
-    return {
-        app,
-        middleware,
-    }
+  return {
+    app,
+    middleware,
+  }
 }
 
 module.exports = createApp
