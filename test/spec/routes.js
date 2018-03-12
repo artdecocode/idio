@@ -43,10 +43,10 @@ const RoutesTestSuite = {
       '/test': ['/', '/alias'],
     })
     deepEqual(addedRoutes, [
-      ['/test', middleware, routes['/test']],
-      ['/', middleware, routes['/test']],
-      ['/alias', middleware, routes['/test']],
-      ['/test2', middleware, routes['/test2']],
+      ['GET /test', '/test', middleware, routes['/test']],
+      ['GET /', '/', middleware, routes['/test']],
+      ['GET /alias', '/alias', middleware, routes['/test']],
+      ['GET /test2', '/test2', middleware, routes['/test2']],
     ])
   },
 }

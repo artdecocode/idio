@@ -2,9 +2,12 @@
 
 [![npm version](https://badge.fury.io/js/idio.svg)](https://badge.fury.io/js/idio)
 
-`idio` is a koa2-based web-server with some pre-installed middleware.
+`idio` is a koa2-based web server with some pre-installed middleware and Mongo
+support out of the box.
 Its purpose is to be able to quickly create a server with basic functionality.
-It also supports automatic initialisation of routes from a given directory.
+It also supports automatic initialisation of routes from a given directory, and
+watching those routes for updates (with `fsevents`). That means that the whole
+server does not need to be restarted when a single route changes.
 
 ## Example
 
@@ -89,6 +92,23 @@ NODE_DEBUG=idio bin/idio
 IDIO 40620: connecting to the database
 IDIO 40620: connected to the database
 http://localhost:5000
+```
+
+## Watching Routes Updates
+
+If you use `initRoutes`, for development purposes you can take advantage of
+`watch` property:
+
+```js
+await initRoutes(routesDir, router, {
+  watch: true,
+})
+```
+
+```sh
+watching idio/routes routes directory
+# update routes/ip
+> hot reloaded GET /ip
 ```
 
 ## Standard Middleware

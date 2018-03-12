@@ -45,6 +45,7 @@ const PORT = process.env.PORT || 5000;
           ]
         },
       },
+      watch: true,
     })
     const routes = router.routes()
     app.use(routes)

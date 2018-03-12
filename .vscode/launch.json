@@ -21,7 +21,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/src/lib/start-app.js"
+      "program": "${workspaceFolder}/bin/idio"
     }
   ]
 }

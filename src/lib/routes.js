@@ -1,5 +1,10 @@
 const { readDirStructure } = require('wrote')
-const { resolve } = require('path')
+const { resolve, relative, sep } = require('path')
+
+let fsevents
+try {
+  fsevents = require('fsevents')
+} catch (e) { /* ignore fsevents */ }
 
 const filterJsx = route => /\.jsx?$/.test(route)
 
@@ -19,17 +24,23 @@ const importRoute = (dir, file, defaultImports = false) => {
   const path = resolve(dir, file)
   const mod = require(path)
   const fn = defaultImports ? mod.default : mod
+  fn._route = true
   return { route, fn }
 }
+
+const getName = (method, path) => `${method.toUpperCase()} ${path}`
 
 const addRoutes = (routes, method, router, getMiddleware, aliases = {}) => {
   Object.keys(routes).forEach((route) => {
     const fn = routes[route]
     const middleware = typeof getMiddleware === 'function' ? getMiddleware(fn) : [fn]
-    router[method](route, ...middleware)
+    const name = getName(method, route)
+    router[method](name, route, ...middleware)
+
     const a = aliases[route] || []
     a.forEach((alias) => {
-      router[method](alias, ...middleware)
+      const aliasName = getName(method, alias)
+      router[method](aliasName, alias, ...middleware)
     })
   })
 }
@@ -43,7 +54,9 @@ const readRoutes = async (dir, {
     const { content: files } = topLevel[method]
     const modules = Object.keys(files)
       .filter(filter)
-      .map(file => importRoute(resolve(dir, method), file, defaultImports))
+      .map(file => {
+        return importRoute(resolve(dir, method), file, defaultImports)
+      })
 
     const routes = modules.reduce(reducePaths, {})
     return {
@@ -59,6 +72,8 @@ const readRoutes = async (dir, {
  * @property {function} [filter] A function used to filter files found in routes directory.
  * @property {boolean} [defaultImports=false] Whether routes are written with ES6 modules and export
  * a default function
+ * @property {boolean} [watch=false] Automatically reload the route when the
+ * module file gets updated (does not watch child dependencies).
  */
 
 /**
@@ -69,9 +84,10 @@ const readRoutes = async (dir, {
  */
 const initRoutes = async (dir, router, {
   middleware = {},
-  filter,
+  filter = filterJsx,
   defaultImports,
   aliases = {},
+  watch = false,
 } = {}) => {
   const methods = await readRoutes(dir, { filter, defaultImports })
   Object.keys(methods).forEach((method) => {
@@ -80,6 +96,42 @@ const initRoutes = async (dir, router, {
     const methodAliases = aliases[method]
     addRoutes(routes, method, router, getMiddleware, methodAliases)
   })
+  if (watch && fsevents) {
+    watchRoutes(dir, router, defaultImports, aliases)
+  }
+}
+
+const watchRoutes = (dir, router, defaultImports, aliases) => {
+  const watcher = fsevents(dir)
+
+  watcher.on('change', (path) => {
+    const rel = relative(dir, path)
+    const [method, file] = rel.split(sep)
+    const route = `/${removeExtension(file)}`
+    const name = getName(method, route)
+    const layer = router.route(name)
+    const fn = layer.stack.find(({ _route }) => _route === true)
+    if (!fn) return
+    const index = layer.stack.indexOf(fn)
+    delete require.cache[path]
+    const { fn: newFn } = importRoute(dir, rel, defaultImports)
+    layer.stack[index] = newFn
+
+    const a = aliases[method][route] || []
+    const reloadedAliases = a.map((alias) => {
+      const aliasName = getName(method, alias)
+      const layer = router.route(aliasName)
+      const fn = layer.stack.find(({ _route }) => _route === true)
+      if (!fn) return
+      const index = layer.stack.indexOf(fn)
+      layer.stack[index] = newFn
+      return aliasName
+    })
+
+    console.log('> hot reloaded %s (%s)', name, reloadedAliases.join(', '))
+  })
+  watcher.start()
+  console.log('watching %s routes directory', dir)
 }
 
 module.exports = {

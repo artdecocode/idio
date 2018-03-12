@@ -18,7 +18,7 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "author": "Anton <anton@sobesednik.media>",
+  "author": "Anton <anton@sobes.io>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sobesednik/idio/issues"
@@ -40,5 +40,8 @@
     "mongoose": "5.0.7",
     "server-destroy": "1.0.1",
     "wrote": "1.4.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "1.1.3"
   }
 }
