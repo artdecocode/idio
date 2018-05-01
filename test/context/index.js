@@ -1,22 +1,27 @@
-const { startApp } = require('../..')
 const { resolve } = require('path')
+const { read } = require('wrote')
+const { startApp } = require('../..')
 
 async function Context() {
-  let app
+  let a
   this.routesDir = resolve(__dirname, '../fixtures/routes')
   this.routesDirModules = resolve(__dirname, '../fixtures/routes-modules')
   this.routesDirWithFiles = resolve(__dirname, '../fixtures/routes-with-files')
 
   this.start = async (config = {}) => {
-    const { app: a, url, router } = await startApp({
+    const { app , url, router } = await startApp({
       port: 0,
       ...config,
     })
-    app = a
-    return { url, router }
+    a = app
+    return { app, url, router }
+  }
+  this.readFixture = async () => {
+    const dracula = await read(resolve(__dirname, '../fixtures/chapter1.txt'))
+    return dracula
   }
   this._destroy = async () => {
-    if (app) await app.destroy()
+    if (a) await a.destroy()
   }
 }
 
