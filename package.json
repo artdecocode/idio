@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Sobesednik/idio.git"
+    "url": "git://github.com/artdecocode/idio.git"
   },
   "keywords": [
     "koa2"
@@ -18,12 +18,12 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "author": "Anton <anton@sobes.io>",
+  "author": "Anton <anton@adc.sh>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Sobesednik/idio/issues"
+    "url": "https://github.com/artdecocode/idio/issues"
   },
-  "homepage": "https://github.com/Sobesednik/idio#readme",
+  "homepage": "https://github.com/artdecocode/idio#readme",
   "devDependencies": {
     "eslint": "^4.18.2",
     "rqt": "^1.0.1",

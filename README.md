@@ -227,4 +227,6 @@ _towrite_
 
 ---
 
-(c) Sobesednik Media 2017
+(c) [Art Deco Code][1] 2018
+
+[1]: https://artdeco.bz
