@@ -51,6 +51,8 @@ const readRoutes = async (dir, {
 } = {}) => {
   const { content: topLevel } = await readDirStructure(dir)
   const methods = Object.keys(topLevel).reduce((acc, method) => {
+    const { type } = topLevel[method]
+    if (type != 'Directory') return acc
     const { content: files } = topLevel[method]
     const modules = Object.keys(files)
       .filter(filter)
