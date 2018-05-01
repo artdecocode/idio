@@ -80,13 +80,13 @@ async function startApp(config = {}) {
     disconnectFromDatabase(db),
     destroy(server),
   ])
-  const serverPort = server.address().port
+  const { port: serverPort } = server.address()
 
   const url = `http://localhost:${serverPort}`
 
   const router = Router()
 
-  return Object.assign(appMeta, { router, url })
+  return {...appMeta, router, url }
 }
 
 module.exports = startApp

@@ -155,7 +155,7 @@ const function = async (app, config) => {
 
 ```js
 const config = {
-  debug: process.env.NODE_DEBUG === 'idio',
+  debug: process.env.NODE_DEBUG == 'idio',
 }
 ```
 
@@ -178,7 +178,7 @@ startApp({
           }
         }
       },
-      config: { debug: process.env.NODE_DEBUG === 'idio' },
+      config: { debug: process.env.NODE_DEBUG == 'idio' },
       use: true,
     },
   },

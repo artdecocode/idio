@@ -10,7 +10,7 @@ async function createApp(config, database) {
 
   const middleware = await setupMiddleware(config.middleware, app)
 
-  if (app.env === 'production') {
+  if (app.env == 'production') {
     app.proxy = true
   }
 

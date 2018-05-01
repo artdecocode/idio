@@ -36,6 +36,7 @@
     "koa-multer": "1.0.2",
     "koa-router": "7.4.0",
     "koa-session": "5.8.1",
+    "koa2-jsx": "1.0.1",
     "mongoose": "5.0.17",
     "server-destroy": "1.0.1",
     "wrote": "1.4.0"

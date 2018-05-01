@@ -33,7 +33,7 @@ const getName = (method, path) => `${method.toUpperCase()} ${path}`
 const addRoutes = (routes, method, router, getMiddleware, aliases = {}) => {
   Object.keys(routes).forEach((route) => {
     const fn = routes[route]
-    const middleware = typeof getMiddleware === 'function' ? getMiddleware(fn) : [fn]
+    const middleware = typeof getMiddleware == 'function' ? getMiddleware(fn) : [fn]
     const name = getName(method, route)
     router[method](name, route, ...middleware)
 
@@ -110,7 +110,7 @@ const watchRoutes = (dir, router, defaultImports, aliases) => {
     const route = `/${removeExtension(file)}`
     const name = getName(method, route)
     const layer = router.route(name)
-    const fn = layer.stack.find(({ _route }) => _route === true)
+    const fn = layer.stack.find(({ _route }) => _route == true)
     if (!fn) return
     const index = layer.stack.indexOf(fn)
     delete require.cache[path]
@@ -121,7 +121,7 @@ const watchRoutes = (dir, router, defaultImports, aliases) => {
     const reloadedAliases = a.map((alias) => {
       const aliasName = getName(method, alias)
       const layer = router.route(aliasName)
-      const fn = layer.stack.find(({ _route }) => _route === true)
+      const fn = layer.stack.find(({ _route }) => _route == true)
       if (!fn) return
       const index = layer.stack.indexOf(fn)
       layer.stack[index] = newFn
