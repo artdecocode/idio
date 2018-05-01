@@ -1,3 +1,7 @@
+## 1.0.1 (1 May 2018)
+
+- Transfer to [`Art Deco Code`](https://artdeco.bz)
+
 ## 1.0.0 (9 March 2018)
 
 - Initialise routes from a given directory
