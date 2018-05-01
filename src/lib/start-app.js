@@ -41,6 +41,7 @@ function listen(app, port, hostname = '0.0.0.0') {
  * @property {string} [databaseURL='mongodb://localhost:27017']
  * @property {number} [port=5000]
  * @property {number} [host=0.0.0.0]
+ * @property {object} [middleware]
  */
 
 /**

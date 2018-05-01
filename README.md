@@ -31,6 +31,7 @@ const PORT = process.env.PORT || 5000;
       middleware: {
         session: { keys: [sessionKey] },
         multer: { config: { dest: uploadDir } },
+        compress: { use: true, threshold: 2048 },
         csrf: { },
         bodyparser: { },
         checkauth: { },
@@ -118,6 +119,7 @@ You can use the following standard middleware:
 
 - _session_: extra `keys` property is required to set `app.keys`
 - _multer_: `dest` property of config will be ensured
+- _compress_: compression
 - _csrf_
 - _bodyparser_
 - _checkauth_: checks if `session` and `session.user` properties are in context

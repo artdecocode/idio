@@ -6,8 +6,19 @@ const logger = require('koa-logger')
 const { ensurePath } = require('wrote')
 const { join, resolve } = require('path')
 const { default: koa2Jsx, wireframe, bootstrap } = require('koa2-jsx')
+const compress = require('koa-compress')
+const { Z_SYNC_FLUSH } = require('zlib')
+
 const checkAuth = require('./check-auth')
 
+function setupCompress(app, config) {
+  const fn = compress({
+    threshold: 1024,
+    flush: Z_SYNC_FLUSH,
+    ...config,
+  })
+  return fn
+}
 function setupKoa2Jsx(app, config, { wireframe: useWireframe }) {
   const fn = koa2Jsx({
     ...(useWireframe ? wireframe : {}),
@@ -52,6 +63,7 @@ const map = {
   session: setupSession,
   multer: setupMulter,
   csrf: setupCsrf,
+  compress: setupCompress,
   bodyparser: setupBodyParser,
   checkauth: setupCheckAuth,
   logger: setupLogger,
@@ -63,7 +75,7 @@ async function initMiddleware(name, conf, app) {
   if (typeof fn !== 'function') {
     throw new Error(`Expecting function for ${name} middleware`)
   }
-  const { use, config, ...rest } = conf
+  const { use, config = {}, ...rest } = conf
   const res = await fn(app, config, rest)
   if (use) {
     app.use(res)
