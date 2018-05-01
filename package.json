@@ -6,7 +6,7 @@
   "scripts": {
     "test": "zoroaster test/spec",
     "test-watch": "zoroaster test/spec --watch",
-    "start": "node bin/idio"
+    "start": "node app/idio"
   },
   "files": [
     "src"

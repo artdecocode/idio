@@ -29,12 +29,13 @@ const PORT = process.env.PORT || 5000;
       databaseURL: DATABASE_URL,
       port: PORT,
       middleware: {
-        session: { config: { keys: [sessionKey] } },
-        multer: { config: { config: { dest: uploadDir } } },
+        session: { keys: [sessionKey] },
+        multer: { config: { dest: uploadDir } },
         csrf: { },
         bodyparser: { },
         checkauth: { },
         logger: { use: true },
+        koa2Jsx: { use: true, wireframe: true /*, bootstrap: true */ },
       },
     })
     const { url, app, router, middleware: { session, bodyparser } } = res
@@ -120,13 +121,15 @@ You can use the following standard middleware:
 - _csrf_
 - _bodyparser_
 - _checkauth_: checks if `session` and `session.user` properties are in context
-- _logger_: always enabled
+- _logger_: logs request information, no configuration
+- _koa2Jsx_: JSX templating, accepts `wireframe` and `bootstrap` boolean config
+properties to enable these features.
 
 They don't require to be passed the `function` property.
 
 ## Middleware Signature
 
-Middleware setup requires to pass an object called `middleware` to `startApp`:
+Middleware set-up requires to pass an object called `middleware` to `startApp`:
 
 ```js
 startApp({
@@ -136,7 +139,7 @@ startApp({
 
 Each middleware can have 3 properties:
 
-- _function_ - setup function (optional). It can be an async or normal function:
+- _function_ - constructor function (optional). It can be an async or normal function:
 
 ```js
 const function = async (app, config) => {
@@ -151,7 +154,7 @@ const function = async (app, config) => {
 }
 ```
 
-- _config_ - will be passed to the setup function
+- _config_ - will be passed to the middleware constructor
 
 ```js
 const config = {
@@ -159,14 +162,14 @@ const config = {
 }
 ```
 
-- _use_ - always use this middleware, will do `app.use()`
+- _use_ - whether to always use this middleware, will do `app.use()`
 
 All together, setting up a custom middleware looks like this:
 
 ```js
 startApp({
   middleware: {
-    logger, // included in standard lib
+    logger: {}, // included in standard lib
     customMiddleware: {
       function: async(app, config) => {
         app.context.usingFunction = true
