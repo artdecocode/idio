@@ -233,6 +233,7 @@ _towrite_
 ## todo
 
 - use subdirectories when reading routes
+- jsdoc for middleware settings
 
 ---
 
