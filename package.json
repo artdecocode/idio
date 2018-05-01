@@ -8,6 +8,9 @@
     "test-watch": "zoroaster test/spec --watch",
     "start": "node bin/idio"
   },
+  "files": [
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/artdecocode/idio.git"
