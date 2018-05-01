@@ -230,6 +230,10 @@ will be stopped.
 
 _towrite_
 
+## todo
+
+- use subdirectories when reading routes
+
 ---
 
 (c) [Art Deco Code][1] 2018
