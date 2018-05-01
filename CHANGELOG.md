@@ -1,5 +1,9 @@
 ## 1 May 2018
 
+### 2.1.0
+
+- [feature] `compress` middleware.
+
 ### 2.0.0
 
 - add `koa2-jsx`
