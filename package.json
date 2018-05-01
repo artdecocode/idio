@@ -25,9 +25,8 @@
   },
   "homepage": "https://github.com/artdecocode/idio#readme",
   "devDependencies": {
-    "eslint": "^4.18.2",
-    "rqt": "^1.0.1",
-    "zoroaster": "0.5.3"
+    "rqt": "1.0.1",
+    "zoroaster": "1.0.1"
   },
   "dependencies": {
     "koa": "2.5.0",
