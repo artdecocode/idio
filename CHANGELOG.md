@@ -1,3 +1,9 @@
+## 2 May 2018
+
+### 2.2.0
+
+- [feature] allow to skip database connection with `autoConnect` set to `false`.
+
 ## 1 May 2018
 
 ### 2.1.0
