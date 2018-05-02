@@ -1,5 +1,6 @@
 const { resolve } = require('path')
 const { startApp, initRoutes } = require('.')
+
 const uploadDir = resolve(__dirname, './app/upload')
 const routesDir = resolve(__dirname, './app/routes')
 

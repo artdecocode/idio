@@ -14,7 +14,7 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "test/spec/init-routes.js"
+        "test/spec/index.js"
       ]
     },
     {

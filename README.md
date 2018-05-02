@@ -13,9 +13,9 @@ server does not need to be restarted when a single route changes.
 
 ```js
 // example.js
+import { resolve } from 'path'
+import { startApp, initRoutes } from 'idio'
 
-const { resolve } = require('path')
-const { startApp, initRoutes } = require('idio')
 const uploadDir = resolve(__dirname, 'upload')
 const routesDir = resolve(__dirname, 'routes')
 
@@ -75,7 +75,7 @@ const PORT = process.env.PORT || 5000;
 ```
 
 ```js
-// routes/index.js
+// app/routes/index.js
 const fn = async (ctx) => {
   const n = ctx.session.views || 1
   ctx.session.views = n + 1
@@ -94,6 +94,29 @@ NODE_DEBUG=idio bin/idio
 IDIO 40620: connecting to the database
 IDIO 40620: connected to the database
 http://localhost:5000
+```
+
+## Connecting to Mongo
+
+`idio` will try to automatically connect to the Mongo database when creating
+a new app. To prevent this, `autoConnect` option can be set to `false`, and a
+`connect` property will be set on the returned object, so that a connection
+can be established manually. This feature is useful when no database is required
+for a website.
+
+```js
+const { connect } = await startApp({
+  databaseURL: 'mongodb://localhost:27017',
+  autoConnect: false,
+})
+await connect()
+```
+
+```js
+// when no database is required
+await startApp({
+  autoConnect: false,
+})
 ```
 
 ## Watching Routes Updates

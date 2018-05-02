@@ -8,14 +8,14 @@ const DEFAULT_PORT = 5000
 const DEFAULT_HOST = '0.0.0.0'
 const DEFAULT_MONGO = 'mongodb://localhost:27017'
 
-async function connectToDatabase(url) {
-  debuglog('connecting to the database')
-  const db = new Database()
-  // mongod --dbpath=data --port 27017 or use deamon
-  await db.connect(url)
-  debuglog('connected to the database')
-  return db
-}
+// async function connectToDatabase(url) {
+//   debuglog('connecting to the database')
+//   const db = new Database()
+//   // mongod --dbpath=data --port 27017 or use deamon
+//   await db.connect(url)
+//   debuglog('connected to the database')
+//   return db
+// }
 
 async function disconnectFromDatabase(db) {
   await db.disconnect()
@@ -54,16 +54,15 @@ function listen(app, port, hostname = '0.0.0.0') {
 /**
  * Start the server.
  * @param {Config} [config] configuration object
- * @returns {{app, middleware, router, url}}
+ * @returns {{app, middleware, router, url, connect}}
  */
 async function startApp(config = {}) {
   const {
     databaseURL = DEFAULT_MONGO,
     port = DEFAULT_PORT,
     host = DEFAULT_HOST,
+    autoConnect = true,
   } = config
-
-  const db = await connectToDatabase(databaseURL)
 
   // close all connections when running nodemon
   process.once('SIGUSR2', async () => {
@@ -71,23 +70,33 @@ async function startApp(config = {}) {
     process.kill(process.pid, 'SIGUSR2')
   })
 
+  const db = new Database()
+
   const appMeta = await createApp(config, db)
   const { app } = appMeta
 
   const server = await listen(app, port, host)
 
   enableDestroy(server)
-  app.destroy = async () => await Promise.all([
-    disconnectFromDatabase(db),
-    destroy(server),
-  ])
+  app.destroy = async () => {
+    await Promise.all([
+      disconnectFromDatabase(db),
+      destroy(server),
+    ])
+  }
   const { port: serverPort } = server.address()
 
   const url = `http://localhost:${serverPort}`
 
   const router = Router()
 
-  return {...appMeta, router, url }
+  const connect = async () => {
+    await db.connect(databaseURL)
+  }
+  if (autoConnect) {
+    await connect()
+  }
+  return {...appMeta, router, url, ...(autoConnect ? {} : { connect }) }
 }
 
 module.exports = startApp
