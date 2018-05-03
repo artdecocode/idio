@@ -2,12 +2,20 @@ const { resolve } = require('path')
 const { read } = require('wrote')
 const { startApp } = require('../..')
 
+/**
+ * A context which can start a server by passing it a config. The server will
+ * be destroyed at the end of the test.
+ */
 async function Context() {
   let app
   this.routesDir = resolve(__dirname, '../fixtures/routes')
   this.routesDirModules = resolve(__dirname, '../fixtures/routes-modules')
   this.routesDirWithFiles = resolve(__dirname, '../fixtures/routes-with-files')
 
+  /**
+   * Start a server
+   * @param {Config} config
+   */
   this.start = async (config = {}) => {
     const res = await startApp({
       port: 0,

@@ -3,6 +3,8 @@ const enableDestroy = require('server-destroy')
 const Router = require('koa-router')
 const Database = require('../services/database')
 const createApp = require('./create-app')
+// eslint-disable-next-line no-unused-vars
+const { AppReturn, Config } = require('../types')
 
 const DEFAULT_PORT = 5000
 const DEFAULT_HOST = '0.0.0.0'
@@ -37,24 +39,9 @@ function listen(app, port, hostname = '0.0.0.0') {
 }
 
 /**
- * @typedef {Object} Config
- * @property {string} [databaseURL='mongodb://localhost:27017']
- * @property {number} [port=5000]
- * @property {number} [host=0.0.0.0]
- * @property {object} [middleware]
- */
-
-/**
- * @typedef {Object} App
- * @property {function} destroy Kill the server and disconnect from the database
- */
-
-
-
-/**
  * Start the server.
  * @param {Config} [config] configuration object
- * @returns {{app, middleware, router, url, connect}}
+ * @returns {AppReturn} An object with variables
  */
 async function startApp(config = {}) {
   const {
