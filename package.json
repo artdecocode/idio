@@ -6,7 +6,7 @@
   "scripts": {
     "test": "zoroaster test/spec",
     "z": "zoroaster",
-    "t": "zoroaster test/spec/generator",
+    "t": "../../packages/zoroaster/bin/zoroaster.js test/spec/middleware/koa2-jsx.js",
     "test-watch": "zoroaster test/spec --watch",
     "start": "node app/idio"
   },

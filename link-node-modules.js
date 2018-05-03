@@ -82,6 +82,7 @@ const run = async (m, i = 0) => {
     }
 
     const [, p] = res
+    // we need to make sure that target exists?
     const path = isAbsolute(p) ? getLast(p) : getRoot(p)
     console.log('%s. %s', i + 1, path) //root, root == p ? '' : `(${p})`)
     await sl(path)

@@ -1,7 +1,7 @@
 const { AppReturn, Config } = require('../../src/types') // eslint-disable-line
 
 /**
- * @typedef {Object} ContextAPI
+ * @typedef {Object} Context
  * @property {function(Config):Promise<AppReturn>} start Call startApp method from
  * the source code. The config argument will be passed as is and it's `port`
  * value will override default `0` (to start on random port) if present. To
@@ -9,21 +9,20 @@ const { AppReturn, Config } = require('../../src/types') // eslint-disable-line
  * the server at the end of each test.
  * @property {function():Promise<string>} readFixture Reads a fixture
  * (chapter 1 of Dracula) and returns as a string
- * @property {function(string):Promise<string>} readSnapshot
  */
 
 
 /**
  * @typedef {Object} TestSuite A test Suite
  * @property {function} context A context constructor
- * @property {function(ContextAPI)} [any] a test case
+ * @property {function(Context)} [any] a test case
  */
 
 module.exports = {
   /**
-   * @type {ContextAPI}
+   * @type {Context}
    */
-  ContextAPI: {}, // eslint-disable-line
+  Context: {}, // eslint-disable-line
   /**
    * @type {TestSuite} A Test Suite Context
    */

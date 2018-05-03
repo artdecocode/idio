@@ -2,7 +2,8 @@
 
 ### 2.3.0
 
-- [test] create context types
+- [test] create context types (ba6cff07261fc8840712d20013e650a9ba8d6197)
+- [test] snapshot context
 
 ## 2 May 2018
 

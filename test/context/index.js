@@ -28,10 +28,6 @@ async function Context() {
     const dracula = await read(resolve(__dirname, '../fixtures/chapter1.txt'))
     return dracula
   }
-  this.readSnapshot = async (path) => {
-    const snapshot = await read(resolve(__dirname, '../snapshots', path))
-    return snapshot.trim()
-  }
   this._destroy = async () => {
     if (app) await app.destroy()
   }
