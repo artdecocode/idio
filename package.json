@@ -5,6 +5,8 @@
   "main": "src",
   "scripts": {
     "test": "zoroaster test/spec",
+    "z": "zoroaster",
+    "t": "zoroaster test/spec/generator",
     "test-watch": "zoroaster test/spec --watch",
     "start": "node app/idio"
   },

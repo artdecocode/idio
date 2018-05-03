@@ -9,6 +9,7 @@ const { AppReturn, Config } = require('../../src/types') // eslint-disable-line
  * the server at the end of each test.
  * @property {function():Promise<string>} readFixture Reads a fixture
  * (chapter 1 of Dracula) and returns as a string
+ * @property {function(string):Promise<string>} readSnapshot
  */
 
 
