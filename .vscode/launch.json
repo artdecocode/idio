@@ -24,7 +24,7 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "test/spec/middleware/koa2-jsx.js"
+        "test/spec/generator/index.js"
       ]
     },
     {
