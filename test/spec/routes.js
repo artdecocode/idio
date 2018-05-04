@@ -1,6 +1,6 @@
-const { deepEqual, equal } = require('zoroaster/assert')
+import { deepEqual, equal } from 'zoroaster/assert'
 import context, { Context } from '../context' // eslint-disable-line no-unused-vars
-const { readRoutes, addRoutes } = require('../../src/lib/routes')
+import { readRoutes, addRoutes } from '../../src/lib/routes'
 
 const RoutesTestSuite = {
   context,
@@ -52,4 +52,4 @@ const RoutesTestSuite = {
   },
 }
 
-module.exports = RoutesTestSuite
+export default RoutesTestSuite

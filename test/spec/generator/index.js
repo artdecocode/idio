@@ -71,4 +71,4 @@ const generatorTestSuite = {
   },
 }
 
-module.exports = generatorTestSuite
+export default generatorTestSuite

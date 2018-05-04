@@ -44,4 +44,4 @@ const idioTestSuite = {
   },
 }
 
-module.exports = idioTestSuite
+export default idioTestSuite

@@ -49,4 +49,4 @@ const compressTestSuite = {
   },
 }
 
-module.exports = compressTestSuite
+export default compressTestSuite
