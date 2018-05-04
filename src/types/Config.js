@@ -1,4 +1,4 @@
-const MiddlewareConfig = require('./Middleware')
+import MiddlewareConfig from './Middleware'
 
 /**
  * @typedef {Object} Config
@@ -15,4 +15,4 @@ const MiddlewareConfig = require('./Middleware')
  */
 const Config = {}
 
-module.exports = Config
+export default Config

@@ -1,15 +1,15 @@
-const session = require('koa-session')
-const CSRF = require('koa-csrf')
-const multer = require('koa-multer')
-const bodyParser = require('koa-bodyparser')
-const logger = require('koa-logger')
-const { ensurePath } = require('wrote')
-const { join, resolve } = require('path')
-const { default: koa2Jsx, wireframe, bootstrap } = require('koa2-jsx')
-const compress = require('koa-compress')
-const { Z_SYNC_FLUSH } = require('zlib')
+import session from 'koa-session'
+import CSRF from 'koa-csrf'
+import multer from 'koa-multer'
+import bodyParser from 'koa-bodyparser'
+import logger from 'koa-logger'
+import { ensurePath } from 'wrote'
+import { join, resolve } from 'path'
+import koa2Jsx, { wireframe, bootstrap } from 'koa2-jsx'
+import compress from 'koa-compress'
+import { Z_SYNC_FLUSH } from 'zlib'
 
-const checkAuth = require('./check-auth')
+import checkAuth from './check-auth'
 
 function setupCompress(app, config) {
   const fn = compress({
@@ -86,7 +86,7 @@ async function initMiddleware(name, conf, app) {
   return res
 }
 
-async function setupMiddleware(middleware = {}, app) {
+export default async function setupMiddleware(middleware = {}, app) {
   const res = await Object.keys(middleware)
     .reduce(async (acc, name) => {
       const res = await acc
@@ -99,5 +99,3 @@ async function setupMiddleware(middleware = {}, app) {
     }, {})
   return res
 }
-
-module.exports = setupMiddleware

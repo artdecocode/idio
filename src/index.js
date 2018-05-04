@@ -1,7 +1,2 @@
-const startApp = require('./lib/start-app')
-const { initRoutes } = require('./lib/routes')
-
-module.exports = {
-  startApp,
-  initRoutes,
-}
+export { default as startApp } from './lib/start-app'
+export { initRoutes } from './lib/routes'

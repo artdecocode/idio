@@ -1,6 +1,6 @@
-const Router = require('koa-router')
-const { readDirStructure } = require('wrote')
-const { resolve, relative, sep } = require('path')
+import Router from 'koa-router'
+import { readDirStructure } from 'wrote'
+import { resolve, relative, sep } from 'path'
 
 let fsevents
 try {

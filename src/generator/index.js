@@ -1,4 +1,4 @@
-const rqt = require('rqt')
+import rqt from 'rqt'
 
 const getAll = (pages) => {
   const allPages = Object.keys(pages).reduce((acc, key) => {
@@ -12,7 +12,7 @@ const getMain = (pages) => {
   return keys
 }
 
-async function generate(url, pages = {}) {
+export default async function generate(url, pages = {}) {
   const allPages = getMain(pages)
   const promises = allPages.map(async page => {
     const res = await rqt(`${url}${page}`)
@@ -27,5 +27,3 @@ async function generate(url, pages = {}) {
   }, {})
   return mv
 }
-
-module.exports = generate

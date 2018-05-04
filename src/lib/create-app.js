@@ -1,8 +1,7 @@
-const Koa = require('koa')
+import Koa from 'koa'
+import setupMiddleware from './setup-middleware'
 
-const setupMiddleware = require('./setup-middleware')
-
-async function createApp(config, database) {
+export default async function createApp(config, database) {
   const app = new Koa()
 
   app.context.database = database
@@ -19,5 +18,3 @@ async function createApp(config, database) {
     middleware,
   }
 }
-
-module.exports = createApp

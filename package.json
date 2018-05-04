@@ -2,16 +2,17 @@
   "name": "idio",
   "version": "2.2.0",
   "description": "A web-server in koa2 with MongoDB connection",
-  "main": "src",
+  "main": "build",
   "scripts": {
     "test": "zoroaster test/spec --babel",
     "z": "zoroaster --babel",
     "t": "zoroaster test/spec/generator/index.js --babel",
     "test-watch": "zoroaster test/spec --watch",
-    "start": "node app/idio"
+    "start": "node app/idio",
+    "build": "babel src --out-dir build"
   },
   "files": [
-    "src"
+    "build"
   ],
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
   },
   "homepage": "https://github.com/artdecocode/idio#readme",
   "devDependencies": {
+    "@babel/cli": "7.0.0-beta.46",
     "@babel/core": "7.0.0-beta.46",
     "@babel/plugin-syntax-object-rest-spread": "7.0.0-beta.46",
     "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.46",

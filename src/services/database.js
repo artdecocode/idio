@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 // mongoose.Promise = Promise
 
 // /**
@@ -35,7 +35,7 @@ function setupModels(connection, models) {
   })
 }
 
-class Database {
+export default class Database {
   /**
    * Create new database instance.
    * @param {object} [modelsMap] Map of models to assign to the connection
@@ -78,5 +78,3 @@ class Database {
     return mongoose.connection.model(name)
   }
 }
-
-module.exports = Database

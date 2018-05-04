@@ -15,6 +15,7 @@ export default async function context() {
   this.routesJsx = resolve(__dirname, '../fixtures/routes-jsx')
   this.routesDirModules = resolve(__dirname, '../fixtures/routes-modules')
   this.routesDirWithFiles = resolve(__dirname, '../fixtures/routes-with-files')
+  this.snapshotDir = SNAPSHOT_DIR
 
   /**
    * Start a server
@@ -32,7 +33,6 @@ export default async function context() {
     const dracula = await read(resolve(__dirname, '../fixtures/chapter1.txt'))
     return dracula
   }
-  this.snapshotDir = SNAPSHOT_DIR
   this._destroy = async () => {
     if (app) await app.destroy()
   }
@@ -41,12 +41,12 @@ export default async function context() {
 
 /**
  * @typedef {Object} Context
- * @property {function(Config):Promise<AppReturn>} start Call startApp method from
+ * @property {(config: Config) => Promise<AppReturn>} start Call startApp method from
  * the source code. The config argument will be passed as is and it's `port`
  * value will override default `0` (to start on random port) if present. To
  * access the server, `url` property can be used. The context will destroy
  * the server at the end of each test.
- * @property {function():Promise<string>} readFixture Reads a fixture
+ * @property {() => Promise<string>} readFixture Reads a fixture
  * (chapter 1 of Dracula) and returns as a string
  * @property {string} routesDir
  * @property {string} routesJsx

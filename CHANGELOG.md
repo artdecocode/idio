@@ -1,9 +1,10 @@
-## 3 May 2018
+## 4 May 2018
 
 ### 2.3.0
 
-- [test] create context types (ba6cff07261fc8840712d20013e650a9ba8d6197)
-- [test] snapshot context
+- [doc] write JSDoc types
+- [test] use snapshot testing
+- [style] convert to modules
 
 ## 2 May 2018
 

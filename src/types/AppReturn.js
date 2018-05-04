@@ -1,4 +1,4 @@
-const Router = require('koa-router')
+import Router from 'koa-router'
 
 /**
  * @typedef {Object} App
@@ -19,4 +19,5 @@ const Router = require('koa-router')
  */
 const AppReturn = {}
 
-module.exports = AppReturn
+export default AppReturn
+

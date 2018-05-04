@@ -1,10 +1,11 @@
-const debuglog = require('util').debuglog('idio')
-const enableDestroy = require('server-destroy')
-const Router = require('koa-router')
-const Database = require('../services/database')
-const createApp = require('./create-app')
-// eslint-disable-next-line no-unused-vars
-const { AppReturn, Config } = require('../types')
+import { debuglog as dl } from 'util'
+import enableDestroy from 'server-destroy'
+import Router from 'koa-router'
+import Database from '../services/database'
+import createApp from './create-app'
+import { AppReturn, Config } from '../types' // eslint-disable-line no-unused-vars
+
+const debuglog = dl('idio')
 
 const DEFAULT_PORT = 5000
 const DEFAULT_HOST = '0.0.0.0'
@@ -43,7 +44,7 @@ function listen(app, port, hostname = '0.0.0.0') {
  * @param {Config} [config] configuration object
  * @returns {AppReturn} An object with variables
  */
-async function startApp(config = {}) {
+export default async function startApp(config = {}) {
   const {
     databaseURL = DEFAULT_MONGO,
     port = DEFAULT_PORT,
@@ -85,5 +86,3 @@ async function startApp(config = {}) {
   }
   return {...appMeta, router, url, ...(autoConnect ? {} : { connect }) }
 }
-
-module.exports = startApp

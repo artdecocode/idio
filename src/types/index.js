@@ -1,7 +1,4 @@
-const AppReturn = require('./AppReturn')
-const Config = require('./Config')
+import AppReturn from './AppReturn'
+import Config from './Config'
 
-module.exports = {
-  AppReturn,
-  Config,
-}
+export { AppReturn, Config }
