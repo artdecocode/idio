@@ -1,7 +1,6 @@
-const rqt = require('rqt')
-const { equal } = require('zoroaster/assert')
-const context = require('../context')
-const { ContextAPI } = require('../context/types') // eslint-disable-line
+import rqt from 'rqt'
+import { equal } from 'zoroaster/assert'
+import context, { Context } from '../context' // eslint-disable-line no-unused-vars
 
 const idioTestSuite = {
   context,

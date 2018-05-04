@@ -1,20 +1,17 @@
-const rqt = require('rqt')
-const { Context } = require('../../context/types') // eslint-disable-line
-const context = require('../../context')
-const { snapshotContext, SnapshotContext } = require('../../context/snapshot') // eslint-disable-line
+import rqt from 'rqt'
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
+import snapshotContext, { SnapshotContext} from 'snapshot-context' // eslint-disable-line
 
+/** @type {Object.<string, (api: Context, sApi: SnapshotContext)>} */
 const generatorTestSuite = {
   context: [
     context,
     snapshotContext,
   ],
-  /**
-   * @param {Context} api
-   * @param {SnapshotContext} snapshot
-   */
   async 'serves pretty html with wireframe'(api, snapshot) {
-    const { start } = api
-    const { testSnapshot } = snapshot
+    const { start, snapshotDir } = api
+    const { test, setDir } = snapshot
+    setDir(snapshotDir)
     const t = 'hello world'
     const { url } = await start({
       middleware: {
@@ -33,7 +30,7 @@ const generatorTestSuite = {
       },
     })
     const actual = await rqt(url)
-    await testSnapshot('koa2Jsx/pretty-wireframe.html', actual)
+    await test('koa2Jsx/pretty-wireframe.html', actual)
   },
 }
 

@@ -7,11 +7,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch cnm",
+      "name": "Launch lnm",
       "program": "${workspaceFolder}/link-node-modules.js",
       "args": [
         "t",
-        "../../packages/mnp"
+        "../koa2-jsx"
       ]
     },
     {
@@ -24,7 +24,8 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "test/spec/generator/index.js"
+        "test/spec/generator/index.js",
+        "--babel"
       ]
     },
     {

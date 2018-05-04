@@ -1,5 +1,5 @@
 const { deepEqual, equal } = require('zoroaster/assert')
-const context = require('../context')
+import context, { Context } from '../context' // eslint-disable-line no-unused-vars
 const { readRoutes, addRoutes } = require('../../src/lib/routes')
 
 const RoutesTestSuite = {
@@ -7,9 +7,10 @@ const RoutesTestSuite = {
   async initRoutes({ routesDir }) {
     const res = await readRoutes(routesDir)
     deepEqual(Object.keys(res), ['get', 'post'])
-    deepEqual(Object.keys(res.get), ['/test'])
+    deepEqual(Object.keys(res.get), ['/about', '/test'])
     deepEqual(Object.keys(res.post), ['/test'])
     equal(typeof res.get['/test'], 'function')
+    equal(typeof res.get['/about'], 'function')
     equal(typeof res.post['/test'], 'function')
   },
   async initRoutesDefault({ routesDirModules }) {

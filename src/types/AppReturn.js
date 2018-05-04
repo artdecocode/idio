@@ -1,3 +1,5 @@
+const Router = require('koa-router')
+
 /**
  * @typedef {Object} App
  * @property {function} destroy Kill the server and disconnect from the database
@@ -7,8 +9,9 @@
  * @typedef {Object} AppReturn
  * @property {App} app
  * @property {string} url
- * @property {function} connect
  * @property {object} middleware
+ * @property {Router} router
+ * @property {function} [connect]
  */
 
 /**

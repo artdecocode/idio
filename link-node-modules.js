@@ -1,11 +1,11 @@
 const { spawn } = require('child_process')
-const { ensurePath } = require('wrote')
+const { ensurePath, assertExists } = require('wrote')
 const { resolve, sep: s, isAbsolute } = require('path')
 const { symlink } = require('fs')
 const Catchment = require('catchment')
 const { scripts } = require('./package.json')
 
-const re = /Error: Cannot find module '(.*)'/
+const re = /Cannot find module '(.*)' from .*?/
 
 const [, , NPM_SCRIPT, FROM, TO] = process.argv
 
@@ -22,9 +22,16 @@ const getLast = p => {
 }
 
 const sl = async (p) => {
-  await new Promise((r, e) => {
+  await new Promise(async (r, e) => {
     const path = TO ? resolve(TO, p) : resolve('node_modules', p)
     const target = resolve(FROM_NODE_MODULES, p)
+    try {
+      await assertExists(target)
+    } catch (er) {
+      er.code = 'TARGET_ENOENT'
+      er.target = target
+      e(er)
+    }
     symlink(target, path, er => {
       return (er ? e(er) : r())
     })
@@ -85,7 +92,11 @@ const run = async (m, i = 0) => {
     // we need to make sure that target exists?
     const path = isAbsolute(p) ? getLast(p) : getRoot(p)
     console.log('%s. %s', i + 1, path) //root, root == p ? '' : `(${p})`)
-    await sl(path)
+    try {
+      await sl(path)
+    } catch (er) {
+      e(er)
+    }
     r()
   })
   if (i > 1) return
@@ -103,6 +114,9 @@ const run = async (m, i = 0) => {
       } catch (err) {
         console.log(err)
       }
+      return
+    } else if (code == 'TARGET_ENOENT') {
+      console.log(`Target ${err.target} does not exist`)
       return
     }
     console.log(stack)

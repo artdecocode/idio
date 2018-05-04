@@ -1,3 +1,4 @@
+const Router = require('koa-router')
 const { readDirStructure } = require('wrote')
 const { resolve, relative, sep } = require('path')
 
@@ -30,19 +31,31 @@ const importRoute = (dir, file, defaultImports = false) => {
 
 const getName = (method, path) => `${method.toUpperCase()} ${path}`
 
+/**
+ *
+ * @param {Object} routes
+ * @param {string} method
+ * @param {Router} router
+ * @param {function} [getMiddleware]
+ * @param {{string:[string]}} [aliases]
+ * @returns {[string]} An array of routes.
+ */
 const addRoutes = (routes, method, router, getMiddleware, aliases = {}) => {
-  Object.keys(routes).forEach((route) => {
+  const res = Object.keys(routes).reduce((acc, route) => {
     const fn = routes[route]
     const middleware = typeof getMiddleware == 'function' ? getMiddleware(fn) : [fn]
     const name = getName(method, route)
     router[method](name, route, ...middleware)
 
     const a = aliases[route] || []
-    a.forEach((alias) => {
+    const al = a.map((alias) => {
       const aliasName = getName(method, alias)
       router[method](aliasName, alias, ...middleware)
+      return alias
     })
-  })
+    return { ...acc, [route]: al }
+  }, {})
+  return res
 }
 
 const readRoutes = async (dir, {
@@ -81,7 +94,7 @@ const readRoutes = async (dir, {
 /**
  *
  * @param {string} dir Path to the routes folder
- * @param {*} router Instance of koa-router
+ * @param {Router} router Instance of koa-router
  * @param {InitConfig} param2
  */
 const initRoutes = async (dir, router, {
@@ -92,15 +105,20 @@ const initRoutes = async (dir, router, {
   watch = false,
 } = {}) => {
   const methods = await readRoutes(dir, { filter, defaultImports })
-  Object.keys(methods).forEach((method) => {
+  const res = Object.keys(methods).reduce((acc, method) => {
     const routes = methods[method]
     const getMiddleware = middleware[method]
     const methodAliases = aliases[method]
-    addRoutes(routes, method, router, getMiddleware, methodAliases)
-  })
+    const r = addRoutes(routes, method, router, getMiddleware, methodAliases)
+    return {
+      ...acc,
+      [method]: r,
+    }
+  }, {})
   if (watch && fsevents) {
     watchRoutes(dir, router, defaultImports, aliases)
   }
+  return res
 }
 
 const watchRoutes = (dir, router, defaultImports, aliases) => {

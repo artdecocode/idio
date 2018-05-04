@@ -1,7 +1,7 @@
-const { equal } = require('zoroaster/assert')
-const rqt = require('rqt')
-const { gunzipSync } = require('zlib')
-const context = require('../../context')
+import { equal } from 'zoroaster/assert'
+import rqt from 'rqt'
+import { gunzipSync } from 'zlib'
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
 function assignRoute(app, url, router, path, body) {
   router.get('test', path, async (ctx) => {
@@ -13,7 +13,9 @@ function assignRoute(app, url, router, path, body) {
 
 const compressTestSuite = {
   context,
-  async 'should use compression'({ start, readFixture }) {
+  /** @param {Context} api */
+  async 'should use compression'(api) {
+    const { start, readFixture } = api
     const body = await readFixture()
     const { app, url, router } = await start({
       middleware: {

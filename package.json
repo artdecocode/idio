@@ -4,9 +4,9 @@
   "description": "A web-server in koa2 with MongoDB connection",
   "main": "src",
   "scripts": {
-    "test": "zoroaster test/spec",
-    "z": "zoroaster",
-    "t": "../../packages/zoroaster/bin/zoroaster.js test/spec/middleware/koa2-jsx.js",
+    "test": "zoroaster test/spec --babel",
+    "z": "zoroaster --babel",
+    "t": "zoroaster test/spec/generator/index.js --babel",
     "test-watch": "zoroaster test/spec --watch",
     "start": "node app/idio"
   },
@@ -30,8 +30,13 @@
   },
   "homepage": "https://github.com/artdecocode/idio#readme",
   "devDependencies": {
+    "@babel/core": "7.0.0-beta.46",
+    "@babel/plugin-syntax-object-rest-spread": "7.0.0-beta.46",
+    "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.46",
+    "@babel/register": "7.0.0-beta.46",
     "rqt": "1.1.0",
-    "zoroaster": "1.0.1"
+    "snapshot-context": "1.1.0",
+    "zoroaster": "1.1.0"
   },
   "dependencies": {
     "koa": "2.5.1",

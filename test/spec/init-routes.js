@@ -2,7 +2,7 @@ const { equal } = require('zoroaster/assert')
 const rqt = require('rqt')
 const bodyparser = require('koa-bodyparser')
 const { initRoutes } = require('../..')
-const context = require('../context')
+import context, { Context } from '../context' // eslint-disable-line no-unused-vars
 
 const initRoutesTestSuite = {
   context,
