@@ -84,5 +84,5 @@ export default async function startApp(config = {}) {
   if (autoConnect) {
     await connect()
   }
-  return {...appMeta, router, url, ...(autoConnect ? {} : { connect }) }
+  return { ...appMeta, router, url, ...(autoConnect ? {} : { connect }) }
 }

@@ -1,4 +1,4 @@
-module.exports = async (ctx) => {
-  const s = `your ip: ${ctx.request.ip}`
+export default async (ctx) => {
+  const s = `Your ip: ${ctx.request.ip}`
   ctx.body = s
 }

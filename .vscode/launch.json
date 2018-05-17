@@ -32,7 +32,14 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/bin/idio"
+      "program": "${workspaceFolder}/app/index.js",
+      "env": {
+        "BABEL_ENV": "test"
+      },
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

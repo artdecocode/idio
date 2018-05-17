@@ -1,6 +1,10 @@
 import Router from 'koa-router'
 import { readDirStructure } from 'wrote'
 import { resolve, relative, sep } from 'path'
+import { debuglog as dl } from 'util'
+
+const debuglog = dl('idio')
+const log = console.log
 
 let fsevents
 try {
@@ -13,11 +17,21 @@ const removeExtension = (route) => {
   return `${route.replace(/\.jsx?$/, '')}`
 }
 
-const reducePaths = (acc, { route, fn }) => {
+const reducePaths = (acc, { route, fn, path }) => {
+  fn.path = path
   return {
     ...acc,
     [route]: fn,
   }
+}
+
+const findChildrenInCache = (dir, file) => {
+  const path = resolve(dir, file)
+  const item = require.cache[path]
+  if (!item) return []
+  const { children } = item
+  const res = children.map(({ id }) => id)
+  return res
 }
 
 const importRoute = (dir, file, defaultImports = false) => {
@@ -26,7 +40,7 @@ const importRoute = (dir, file, defaultImports = false) => {
   const mod = require(path)
   const fn = defaultImports ? mod.default : mod
   fn._route = true
-  return { route, fn }
+  return { route, fn, path }
 }
 
 const getName = (method, path) => `${method.toUpperCase()} ${path}`
@@ -70,7 +84,9 @@ const readRoutes = async (dir, {
     const modules = Object.keys(files)
       .filter(filter)
       .map(file => {
-        return importRoute(resolve(dir, method), file, defaultImports)
+        const path = resolve(dir, method)
+        const route = importRoute(path, file, defaultImports)
+        return route
       })
 
     const routes = modules.reduce(reducePaths, {})
@@ -115,44 +131,86 @@ const initRoutes = async (dir, router, {
       [method]: r,
     }
   }, {})
+
   if (watch && fsevents) {
-    watchRoutes(dir, router, defaultImports, aliases)
+    watchPages(methods, dir, router, defaultImports, aliases)
+    // watchRoutes(dir, router, defaultImports, aliases)
   }
   return res
 }
 
-const watchRoutes = (dir, router, defaultImports, aliases) => {
-  const watcher = fsevents(dir)
+const watchPages = (methods, dir, router, defaultImports, aliases) => {
+  Object.keys(methods).forEach((m) => {
+    const method = methods[m]
+    const keys = Object.keys(method)
+    keys.forEach(key => {
+      const { path } = method[key]
+      const watcher = fsevents(path)
+      log('watching %s', path)
 
-  watcher.on('change', (path) => {
-    const rel = relative(dir, path)
-    const [method, file] = rel.split(sep)
-    const route = `/${removeExtension(file)}`
-    const name = getName(method, route)
-    const layer = router.route(name)
-    const fn = layer.stack.find(({ _route }) => _route == true)
-    if (!fn) return
-    const index = layer.stack.indexOf(fn)
-    delete require.cache[path]
-    const { fn: newFn } = importRoute(dir, rel, defaultImports)
-    layer.stack[index] = newFn
+      watcher.on('modified', () => {
+        log('updated %s', path)
+        onChange(path, dir, router, defaultImports, aliases)
+      })
+      watcher.start()
 
-    const a = aliases[method][route] || []
-    const reloadedAliases = a.map((alias) => {
-      const aliasName = getName(method, alias)
-      const layer = router.route(aliasName)
-      const fn = layer.stack.find(({ _route }) => _route == true)
-      if (!fn) return
-      const index = layer.stack.indexOf(fn)
-      layer.stack[index] = newFn
-      return aliasName
+      const children = findChildrenInCache('', path)
+      children.filter((c) => {
+        return !/node_modules/.test(c)
+      }).forEach((c) => {
+        const w = fsevents(c)
+        log('watching dependency %s', c)
+        w.on('modified', (p) => {
+          log('updated dependency %s of %s', p, path)
+          onChange(path, dir, router, defaultImports, aliases)
+        })
+        w.start()
+      })
     })
-
-    console.log('> hot reloaded %s (%s)', name, reloadedAliases.join(', '))
   })
-  watcher.start()
-  console.log('watching %s routes directory', dir)
 }
+
+const onChange = (path, dir, router, defaultImports, aliases) => {
+  const rel = relative(dir, path)
+  const [method, file] = rel.split(sep)
+  const route = `/${removeExtension(file)}`
+  const name = getName(method, route)
+  const layer = router.route(name)
+  const fn = layer.stack.find(({ _route }) => _route == true)
+  if (!fn) return
+  const i = layer.stack.indexOf(fn)
+  const children = findChildrenInCache('', path)
+  children.forEach((c) => {
+    debuglog('removing cache for child %s', c)
+    delete require.cache[c]
+  })
+  delete require.cache[path]
+  const { fn: newFn } = importRoute(dir, rel, defaultImports)
+  layer.stack[i] = newFn
+
+  const a = aliases[method][route] || []
+  const reloadedAliases = a.map((alias) => {
+    const aliasName = getName(method, alias)
+    const l = router.route(aliasName)
+    const fun = l.stack.find(({ _route }) => _route == true)
+    if (!fun) return
+    const j = l.stack.indexOf(fun)
+    l.stack[j] = newFn
+    return aliasName
+  })
+
+  console.log('> hot reloaded %s (%s)', name, reloadedAliases.join(', '))
+}
+
+// const watchRoutes = (dir, router, defaultImports, aliases) => {
+//   const watcher = fsevents(dir)
+
+//   watcher.on('change', (path) => {
+//     onChange(path, dir, router, defaultImports, aliases)
+//   })
+//   watcher.start()
+//   console.log('watching %s routes directory', dir)
+// }
 
 module.exports = {
   initRoutes,

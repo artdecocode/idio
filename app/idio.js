@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-const { resolve } = require('path')
-const { startApp, initRoutes } = require('..')
+import { resolve } from 'path'
+import { startApp, initRoutes } from '../src'
 
 const uploadDir = resolve(__dirname, 'upload')
 const routesDir = resolve(__dirname, 'routes')
@@ -12,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 (async () => {
   try {
     const res = await startApp({
+      autoConnect: false,
       databaseURL: DATABASE_URL,
       port: PORT,
       middleware: {
@@ -50,6 +50,7 @@ const PORT = process.env.PORT || 5000;
     const { url, app, router, middleware: { session } } = res
 
     await initRoutes(routesDir, router, {
+      defaultImports: true,
       aliases: {
         get: {
           '/index': ['/'],
