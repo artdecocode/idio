@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 import { read } from 'wrote'
-import { startApp } from '../..'
+import { startApp } from '../../src'
 import { AppReturn, Config } from '../../src/types' // eslint-disable-line no-unused-vars
 
 const SNAPSHOT_DIR = resolve(__dirname, '../snapshots')

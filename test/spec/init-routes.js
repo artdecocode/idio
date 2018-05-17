@@ -1,8 +1,8 @@
 import { equal } from 'zoroaster/assert'
 import rqt from 'rqt'
 import bodyparser from 'koa-bodyparser'
-import { initRoutes } from '../..'
 import context, { Context } from '../context' // eslint-disable-line no-unused-vars
+import { initRoutes } from '../../src'
 
 const initRoutesTestSuite = {
   context,

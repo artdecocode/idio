@@ -5,6 +5,8 @@
   "main": "build",
   "scripts": {
     "test": "zoroaster test/spec --babel",
+    "test-build": "BABEL_ENV=test-build zoroaster test/spec --babel",
+    "test-all": "yarn-s test test-build",
     "dev": "node app",
     "z": "zoroaster --babel",
     "t": "zoroaster test/spec/generator/index.js --babel",
@@ -39,11 +41,13 @@
     "@babel/preset-react": "7.0.0-beta.47",
     "@babel/register": "7.0.0-beta.47",
     "babel-plugin-react-require": "3.0.0",
+    "babel-plugin-transform-rename-import": "2.2.0",
     "eslint": "4.19.1",
     "eslint-config-artdeco": "1.0.0",
     "eslint-plugin-react": "7.8.2",
     "rqt": "1.1.0",
     "snapshot-context": "1.1.6",
+    "yarn-s": "1.1.0",
     "zoroaster": "2.0.0"
   },
   "dependencies": {

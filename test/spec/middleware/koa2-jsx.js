@@ -1,6 +1,6 @@
 import rqt from 'rqt'
-import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 import snapshotContext, { SnapshotContext} from 'snapshot-context' // eslint-disable-line
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 
 /** @type {Object.<string, (api: Context, sApi: SnapshotContext)>} */
 const generatorTestSuite = {

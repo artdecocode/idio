@@ -1,8 +1,8 @@
 import { deepEqual } from 'zoroaster/assert'
-import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 import snapshotContext, { SnapshotContext} from 'snapshot-context' // eslint-disable-line
+import context, { Context } from '../../context' // eslint-disable-line no-unused-vars
 import generator from '../../../src/generator'
-import { initRoutes } from '../../..'
+import { initRoutes } from '../../../src'
 
 /**
  * @type {Object.<string, (api: Context, sApi: SnapshotContext)>}

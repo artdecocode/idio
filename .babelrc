@@ -10,6 +10,20 @@
   "env": {
     "test": {
       "retainLines": true
+    },
+    "test-build": {
+      "plugins": [
+        [
+          "transform-rename-import",
+          {
+            "original": "^((../)+)src",
+            "replacement": "$1build"
+          }
+        ]
+      ],
+      "ignore": [
+        "build/**/*.js"
+      ]
     }
   }
 }
