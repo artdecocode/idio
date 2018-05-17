@@ -32,19 +32,19 @@
   },
   "homepage": "https://github.com/artdecocode/idio#readme",
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.46",
-    "@babel/core": "7.0.0-beta.46",
-    "@babel/plugin-syntax-object-rest-spread": "7.0.0-beta.46",
-    "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.46",
+    "@babel/cli": "7.0.0-beta.47",
+    "@babel/core": "7.0.0-beta.47",
+    "@babel/plugin-syntax-object-rest-spread": "7.0.0-beta.47",
+    "@babel/plugin-transform-modules-commonjs": "7.0.0-beta.47",
     "@babel/preset-react": "7.0.0-beta.47",
-    "@babel/register": "7.0.0-beta.46",
+    "@babel/register": "7.0.0-beta.47",
     "babel-plugin-react-require": "3.0.0",
     "eslint": "4.19.1",
     "eslint-config-artdeco": "1.0.0",
     "eslint-plugin-react": "7.8.2",
     "rqt": "1.1.0",
-    "snapshot-context": "1.1.0",
-    "zoroaster": "1.1.0"
+    "snapshot-context": "1.1.6",
+    "zoroaster": "2.0.0"
   },
   "dependencies": {
     "koa": "2.5.1",
@@ -56,7 +56,7 @@
     "koa-router": "7.4.0",
     "koa-session": "5.8.1",
     "koa2-jsx": "1.0.1",
-    "mongoose": "5.0.17",
+    "mongoose": "5.1.1",
     "server-destroy": "1.0.1",
     "wrote": "1.4.0"
   },
