@@ -3,6 +3,7 @@
 ### 2.4.0
 
 - [feature] watch routes' dependencies for hot route reload.
+- [package] `test-build` and `test-all` scripts
 
 ## 4 May 2018
 
