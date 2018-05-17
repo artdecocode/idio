@@ -1,3 +1,9 @@
+## 17 May 2018
+
+### 2.4.0
+
+- [feature] watch routes' dependencies for hot route reload.
+
 ## 4 May 2018
 
 ### 2.3.0
