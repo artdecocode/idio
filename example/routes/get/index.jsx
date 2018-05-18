@@ -1,4 +1,4 @@
-import Idio from '../../Components/Idio.jsx'
+import Idio from '../../Components/Idio'
 
 export default async (ctx) => {
   const n = ctx.session.views || 1

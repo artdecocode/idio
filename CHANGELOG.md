@@ -1,3 +1,12 @@
+## 18 May 2018
+
+### 2.5.0
+
+- [feature] better error when listening failed
+- [feature] combined `startApp` and `initRoutes` into a single default export
+- [doc] improve documentation
+- [package] move `watchRoutes` to `idio-dev`
+
 ## 17 May 2018
 
 ### 2.4.0

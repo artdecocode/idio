@@ -1,30 +1,26 @@
 "use strict";
 
-var _koaRouter = _interopRequireDefault(require("koa-router"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initRoutes2 = exports.initRoutes = exports.readRoutes = exports.addRoutes = exports.getName = exports.importRoute = exports.removeExtension = void 0;
 
 var _wrote = require("wrote");
 
 var _path = require("path");
 
-var _util = require("util");
+var _RoutesConfig = _interopRequireDefault(require("../types/RoutesConfig"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const debuglog = (0, _util.debuglog)('idio');
-const log = console.log;
-let fsevents;
-
-try {
-  fsevents = require('fsevents');
-} catch (e) {
-  /* ignore fsevents */
-}
-
+// eslint-disable-line
 const filterJsx = route => /\.jsx?$/.test(route);
 
 const removeExtension = route => {
   return `${route.replace(/\.jsx?$/, '')}`;
 };
+
+exports.removeExtension = removeExtension;
 
 const reducePaths = (acc, {
   route,
@@ -35,19 +31,6 @@ const reducePaths = (acc, {
   return { ...acc,
     [route]: fn
   };
-};
-
-const findChildrenInCache = (dir, file) => {
-  const path = (0, _path.resolve)(dir, file);
-  const item = require.cache[path];
-  if (!item) return [];
-  const {
-    children
-  } = item;
-  const res = children.map(({
-    id
-  }) => id);
-  return res;
 };
 
 const importRoute = (dir, file, defaultImports = false) => {
@@ -65,9 +48,10 @@ const importRoute = (dir, file, defaultImports = false) => {
   };
 };
 
+exports.importRoute = importRoute;
+
 const getName = (method, path) => `${method.toUpperCase()} ${path}`;
 /**
- *
  * @param {Object} routes
  * @param {string} method
  * @param {Router} router
@@ -76,6 +60,8 @@ const getName = (method, path) => `${method.toUpperCase()} ${path}`;
  * @returns {[string]} An array of routes.
  */
 
+
+exports.getName = getName;
 
 const addRoutes = (routes, method, router, getMiddleware, aliases = {}) => {
   const res = Object.keys(routes).reduce((acc, route) => {
@@ -95,6 +81,8 @@ const addRoutes = (routes, method, router, getMiddleware, aliases = {}) => {
   }, {});
   return res;
 };
+
+exports.addRoutes = addRoutes;
 
 const readRoutes = async (dir, {
   filter = filterJsx,
@@ -140,18 +128,19 @@ const readRoutes = async (dir, {
  */
 
 
+exports.readRoutes = readRoutes;
+
 const initRoutes = async (dir, router, {
   middleware = {},
   filter = filterJsx,
   defaultImports,
-  aliases = {},
-  watch = false
+  aliases = {}
 } = {}) => {
   const methods = await readRoutes(dir, {
     filter,
     defaultImports
   });
-  const res = Object.keys(methods).reduce((acc, method) => {
+  Object.keys(methods).reduce((acc, method) => {
     const routes = methods[method];
     const getMiddleware = middleware[method];
     const methodAliases = aliases[method];
@@ -160,91 +149,65 @@ const initRoutes = async (dir, router, {
       [method]: r
     };
   }, {});
+  return methods;
+};
+/**
+ * Initialise routes.
+ * @param {RoutesConfig} routesConfig Routes configuration object.
+ * @param {Middleware} appMiddleware Set up middleware map.
+ * @param {Router} router Instance of koa-router
+ */
 
-  if (watch && fsevents) {
-    watchPages(methods, dir, router, defaultImports, aliases); // watchRoutes(dir, router, defaultImports, aliases)
+
+exports.initRoutes = initRoutes;
+
+const initRoutes2 = async ({
+  dir,
+  middleware = {},
+  filter = filterJsx,
+  defaultImports = true,
+  aliases = {}
+} = {}, appMiddleware, router) => {
+  const methods = await readRoutes(dir, {
+    filter,
+    defaultImports
+  });
+  Object.keys(methods).reduce((acc, method) => {
+    const routes = methods[method];
+    const getMiddleware = makeGetMiddleware(method, middleware, appMiddleware);
+    const methodAliases = aliases[method];
+    const r = addRoutes(routes, method, router, getMiddleware, methodAliases);
+    return { ...acc,
+      [method]: r
+    };
+  }, {});
+  return methods;
+};
+
+exports.initRoutes2 = initRoutes2;
+
+const makeGetMiddleware = (method, middleware, appMiddleware) => {
+  /**
+   * A function specific for each method which returns full middleware chain for routes. The returned array consists of strings which are keys in the appMiddleware object.
+   * @type {(route: function) => string[]}
+   */
+  const getChain = middleware[method];
+
+  if (!getChain) {
+    return route => [route];
   }
 
-  return res;
-};
+  const getMiddleware = route => {
+    const chain = getChain(route);
+    const m = chain.map(s => {
+      if (typeof s == 'string') {
+        return appMiddleware[s];
+      }
 
-const watchPages = (methods, dir, router, defaultImports, aliases) => {
-  Object.keys(methods).forEach(m => {
-    const method = methods[m];
-    const keys = Object.keys(method);
-    keys.forEach(key => {
-      const {
-        path
-      } = method[key];
-      const watcher = fsevents(path);
-      log('watching %s', path);
-      watcher.on('modified', () => {
-        log('updated %s', path);
-        onChange(path, dir, router, defaultImports, aliases);
-      });
-      watcher.start();
-      const children = findChildrenInCache('', path);
-      children.filter(c => {
-        return !/node_modules/.test(c);
-      }).forEach(c => {
-        const w = fsevents(c);
-        log('watching dependency %s', c);
-        w.on('modified', p => {
-          log('updated dependency %s of %s', p, path);
-          onChange(path, dir, router, defaultImports, aliases);
-        });
-        w.start();
-      });
+      return s;
     });
-  });
-};
+    return m;
+  };
 
-const onChange = (path, dir, router, defaultImports, aliases) => {
-  const rel = (0, _path.relative)(dir, path);
-  const [method, file] = rel.split(_path.sep);
-  const route = `/${removeExtension(file)}`;
-  const name = getName(method, route);
-  const layer = router.route(name);
-  const fn = layer.stack.find(({
-    _route
-  }) => _route == true);
-  if (!fn) return;
-  const i = layer.stack.indexOf(fn);
-  const children = findChildrenInCache('', path);
-  children.forEach(c => {
-    debuglog('removing cache for child %s', c);
-    delete require.cache[c];
-  });
-  delete require.cache[path];
-  const {
-    fn: newFn
-  } = importRoute(dir, rel, defaultImports);
-  layer.stack[i] = newFn;
-  const a = aliases[method][route] || [];
-  const reloadedAliases = a.map(alias => {
-    const aliasName = getName(method, alias);
-    const l = router.route(aliasName);
-    const fun = l.stack.find(({
-      _route
-    }) => _route == true);
-    if (!fun) return;
-    const j = l.stack.indexOf(fun);
-    l.stack[j] = newFn;
-    return aliasName;
-  });
-  console.log('> hot reloaded %s (%s)', name, reloadedAliases.join(', '));
-}; // const watchRoutes = (dir, router, defaultImports, aliases) => {
-//   const watcher = fsevents(dir)
-//   watcher.on('change', (path) => {
-//     onChange(path, dir, router, defaultImports, aliases)
-//   })
-//   watcher.start()
-//   console.log('watching %s routes directory', dir)
-// }
-
-
-module.exports = {
-  initRoutes,
-  readRoutes,
-  addRoutes
+  return getMiddleware;
 };

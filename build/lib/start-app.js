@@ -11,6 +11,8 @@ var _serverDestroy = _interopRequireDefault(require("server-destroy"));
 
 var _koaRouter = _interopRequireDefault(require("koa-router"));
 
+var _erotic = _interopRequireDefault(require("erotic"));
+
 var _database = _interopRequireDefault(require("../services/database"));
 
 var _createApp = _interopRequireDefault(require("./create-app"));
@@ -44,10 +46,25 @@ async function destroy(server) {
   });
   debuglog('destroyed the server');
 }
+/**
+ * @param {Koa} app
+ * @param {number} [port]
+ * @param {string} [hostname]
+ */
+
 
 function listen(app, port, hostname = '0.0.0.0') {
-  return new Promise(resolve => {
-    const server = app.listen(port, hostname, () => resolve(server));
+  const cb = (0, _erotic.default)(true);
+  return new Promise((r, j) => {
+    const ec = err => {
+      const e = cb(err);
+      j(e);
+    };
+
+    const server = app.listen(port, hostname, () => {
+      r(server);
+      app.removeListener('error', ec);
+    }).once('error', ec);
   });
 }
 /**
