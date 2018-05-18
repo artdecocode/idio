@@ -1,0 +1,5 @@
+{
+  "/about": "<!doctype html>\n<html lang=\"en\"><head><meta charSet=\"utf-8\"/><title>Test Website | ABOUT</title></head><body>ABOUT US</body></html>",
+  "/blog": "<!doctype html>\n<html lang=\"en\"><head><meta charSet=\"utf-8\"/><title>Test Website | BLOG</title></head><body>BLOG POSTS</body></html>",
+  "/index": "<!doctype html>\n<html lang=\"en\"><head><meta charSet=\"utf-8\"/><title>Test Website | MAIN PAGE</title></head><body>MAIN PAGE</body></html>"
+}
