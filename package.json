@@ -10,7 +10,9 @@
     "test-all": "yarn-s test test-build",
     "test-watch": "zoroaster test/spec --watch",
     "example/": "node example",
-    "build": "babel src --out-dir build"
+    "build": "babel src --out-dir build",
+    "commit-build" : "git add build; timestamp=$(date \"+%c\") && git commit -m \"build $timestamp\"",
+    "b": "yarn-s build commit-build"
   },
   "files": [
     "build"
