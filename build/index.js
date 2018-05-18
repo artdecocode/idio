@@ -33,7 +33,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Start the server.
  * @param {Config} config A configuration object.
- * @param {RoutesConfig} routesConfig A configuration object for the router.
+ * @param {RoutesConfig} [routesConfig] A configuration object for the router.
  */
 async function _default(config, routesConfig) {
   const res = await (0, _startApp.default)(config);
@@ -41,13 +41,20 @@ async function _default(config, routesConfig) {
     url,
     app,
     router,
-    middleware
+    middleware,
+    connect
   } = res;
-  await (0, _routes.initRoutes2)(routesConfig, middleware, router);
-  const routes = router.routes();
-  app.use(routes);
+
+  if (routesConfig) {
+    await (0, _routes.initRoutes2)(routesConfig, middleware, router);
+    const routes = router.routes();
+    app.use(routes);
+  }
+
   return {
-    url
+    url,
+    app,
+    connect
   };
 }
 /**
@@ -99,4 +106,5 @@ async function _default(config, routesConfig) {
  * @property {number} [port=5000]
  * @property {number} [host=0.0.0.0]
  * @property {MiddlewareConfig} [middleware]
+ * @property {boolean} [autoConnect=true] Whether to automatically connect to the database.
  */
