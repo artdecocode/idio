@@ -11,7 +11,7 @@
     "test": {
       "retainLines": true
     },
-    "test-build": {
+    "build": {
       "plugins": [
         [
           "transform-rename-import",

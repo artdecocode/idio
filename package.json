@@ -5,14 +5,19 @@
   "main": "build",
   "scripts": {
     "t": "zoroaster --babel",
+    "tb": "BABEL_ENV=build zoroaster --babel",
     "test": "zoroaster test/spec --babel",
-    "test-build": "BABEL_ENV=test-build zoroaster test/spec --babel",
+    "@test-build": "BABEL_ENV=build zoroaster test/spec --babel",
     "test-all": "yarn-s test test-build",
     "test-watch": "zoroaster test/spec --watch",
     "example/": "node example",
     "build": "babel src --out-dir build",
-    "commit-build" : "git add build; timestamp=$(date \"+%c\") && git commit -m \"build $timestamp\"",
-    "b": "yarn-s build commit-build"
+    "build-test": "BABEL_ENV=build babel test --out-dir test-build --copy-files",
+    "build-all": "yarn-s build build-test",
+    "test-build": "zoroaster test-build/spec",
+    "commit-test-build": "git add test-build; timestamp=$(date \"+%c\") && git commit -m \"test-build $timestamp\"",
+    "commit-build" : "git add build test-build; timestamp=$(date \"+%c\") && git commit -m \"build test-build $timestamp\"",
+    "b": "yarn-s test @test-build build-all test-build commit-build"
   },
   "files": [
     "build"
