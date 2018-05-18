@@ -30,6 +30,10 @@ import config, { routesConfig } from './config'
 http://localhost:5000
 ```
 
+## `idio(config, routesConfig?)`
+
+Idio accepts 2 arguments: the config and optional routes config to read routes from directories.
+
 ## Configuration
 
 The server can be configured using the following structure.
