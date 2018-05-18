@@ -15,13 +15,15 @@ export default async function (config, routesConfig) {
   const res = await startApp(config)
   const { url, app, router, middleware, connect } = res
 
+  let methods
+
   if (routesConfig) {
-    await initRoutes2(routesConfig, middleware, router)
+    methods = await initRoutes2(routesConfig, middleware, router)
     const routes = router.routes()
     app.use(routes)
   }
 
-  return { url, app, connect }
+  return { url, app, connect, methods }
 }
 
 /**
