@@ -1,7 +1,6 @@
 import { debuglog as dl } from 'util'
 import enableDestroy from 'server-destroy'
 import Router from 'koa-router'
-import Koa from 'koa'
 import erotic from 'erotic'
 import Database from '../services/database'
 import createApp from './create-app'
