@@ -214,7 +214,7 @@ export const routesConfig = {
 
 ### middleware
 
-`middleware` property determines the order and installed middleware for each method. Currently it is impossible to control the middleware for each individual route. The strings returned by this function are mapped to the middleware functions created during middleware set-up earlier using the keys from the `idio` config.
+`middleware` property determines the order and installed middleware for each method. Currently it is impossible to control the middleware for each individual route. The strings returned by this function are mapped to the middleware functions created during middleware set-up earlier using the keys from the `idio` config. All middleware specified with this method will be run after the middleware from app configuration with `use` property set to true.
 
 ### aliases
 

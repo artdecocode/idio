@@ -21,7 +21,7 @@ export default async function (config, routesConfig) {
     app.use(routes)
   }
 
-  return { url, connect }
+  return { url, app, connect }
 }
 
 /**
