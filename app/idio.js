@@ -66,7 +66,12 @@ const PORT = process.env.PORT || 5000;
 
     const routes = router.routes()
     app.use(routes)
-  } catch (err) {
-    console.log(err)
+  } catch ({ message, stack }) {
+    if (process.env.DEBUG) {
+      console.log(stack)
+    } else {
+      console.log(message)
+    }
+    process.exit(1)
   }
 })()

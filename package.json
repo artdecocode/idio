@@ -11,7 +11,7 @@
     "z": "zoroaster --babel",
     "t": "zoroaster test/spec/generator/index.js --babel",
     "test-watch": "zoroaster test/spec --watch",
-    "start": "node app",
+    "example/": "node example",
     "build": "babel src --out-dir build"
   },
   "files": [
@@ -51,6 +51,7 @@
     "zoroaster": "2.0.0"
   },
   "dependencies": {
+    "erotic": "1.1.0",
     "koa": "2.5.1",
     "koa-bodyparser": "4.2.0",
     "koa-compress": "3.0.0",
