@@ -4,11 +4,10 @@
   "description": "A web-server in koa2 with MongoDB connection",
   "main": "build",
   "scripts": {
+    "t": "zoroaster --babel",
     "test": "zoroaster test/spec --babel",
     "test-build": "BABEL_ENV=test-build zoroaster test/spec --babel",
     "test-all": "yarn-s test test-build",
-    "z": "zoroaster --babel",
-    "t": "zoroaster test/spec/generator/index.js --babel",
     "test-watch": "zoroaster test/spec --watch",
     "example/": "node example",
     "build": "babel src --out-dir build"
