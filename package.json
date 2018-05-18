@@ -1,6 +1,6 @@
 {
   "name": "idio",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "A web-server in koa2 with MongoDB connection",
   "main": "build",
   "scripts": {
@@ -17,7 +17,7 @@
     "test-build": "zoroaster test-build/spec",
     "commit-test": "git add test; timestamp=$(date \"+%c\") && git commit -m \"test $timestamp\"",
     "commit-test-build": "git add test-build; timestamp=$(date \"+%c\") && git commit -m \"test-build $timestamp\"",
-    "commit-build" : "git add build; timestamp=$(date \"+%c\") && git commit -m \"build $timestamp\"",
+    "commit-build": "git add build; timestamp=$(date \"+%c\") && git commit -m \"build $timestamp\"",
     "b": "yarn-s test @test-build build-all test-build commit-build commit-test"
   },
   "files": [
