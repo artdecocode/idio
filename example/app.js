@@ -1,8 +1,8 @@
-const { resolve } = require('path')
-const { startApp, initRoutes } = require('.')
+import { resolve } from 'path'
+import { startApp, initRoutes } from 'idio'
 
-const uploadDir = resolve(__dirname, './app/upload')
-const routesDir = resolve(__dirname, './app/routes')
+const uploadDir = resolve(__dirname, 'upload')
+const routesDir = resolve(__dirname, 'routes')
 
 const sessionKey = 'secret-key'
 const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost:27017/idio'
@@ -26,7 +26,7 @@ const PORT = process.env.PORT || 5000;
     const { url, app, router, middleware: { session, bodyparser } } = res
 
     await initRoutes(routesDir, router, {
-      defaultImports: false, // set to true if routes are written w/ "export default"
+      defaultImports: true,
       filter(file) { return /\.js/.test(file) },
       aliases: {
         get: {
@@ -53,7 +53,12 @@ const PORT = process.env.PORT || 5000;
     app.use(routes)
 
     console.log(url)
-  } catch (err) {
-    console.log(err)
+  } catch ({ message, stack }) {
+    if (process.env.DEBUG) {
+      console.log(stack)
+    } else {
+      console.log(message)
+    }
+    process.exit(1)
   }
 })()
