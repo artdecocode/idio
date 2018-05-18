@@ -1,5 +1,9 @@
 ## 18 May 2018
 
+### 2.5.1
+
+- [feature] return `methods` from the main function.
+
 ### 2.5.0
 
 - [feature] better error when listening failed
