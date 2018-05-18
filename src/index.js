@@ -9,17 +9,19 @@ export { initRoutes } from './lib/routes'
 /**
  * Start the server.
  * @param {Config} config A configuration object.
- * @param {RoutesConfig} routesConfig A configuration object for the router.
+ * @param {RoutesConfig} [routesConfig] A configuration object for the router.
  */
 export default async function (config, routesConfig) {
   const res = await startApp(config)
-  const { url, app, router, middleware } = res
+  const { url, app, router, middleware, connect } = res
 
-  await initRoutes2(routesConfig, middleware, router)
-  const routes = router.routes()
-  app.use(routes)
+  if (routesConfig) {
+    await initRoutes2(routesConfig, middleware, router)
+    const routes = router.routes()
+    app.use(routes)
+  }
 
-  return { url }
+  return { url, connect }
 }
 
 /**
@@ -72,4 +74,5 @@ export default async function (config, routesConfig) {
  * @property {number} [port=5000]
  * @property {number} [host=0.0.0.0]
  * @property {MiddlewareConfig} [middleware]
+ * @property {boolean} [autoConnect=true] Whether to automatically connect to the database.
  */

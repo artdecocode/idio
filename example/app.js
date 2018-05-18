@@ -1,4 +1,5 @@
-import idio from '../src'
+/* yarn example */
+import idio from 'idio'
 import config, { routesConfig } from './config'
 
 (async () => {
