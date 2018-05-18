@@ -7,7 +7,6 @@
     "test": "zoroaster test/spec --babel",
     "test-build": "BABEL_ENV=test-build zoroaster test/spec --babel",
     "test-all": "yarn-s test test-build",
-    "dev": "node app",
     "z": "zoroaster --babel",
     "t": "zoroaster test/spec/generator/index.js --babel",
     "test-watch": "zoroaster test/spec --watch",
