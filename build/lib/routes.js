@@ -193,6 +193,10 @@ const makeGetMiddleware = (method, middleware, appMiddleware) => {
    */
   const getChain = middleware[method];
 
+  if (!getChain) {
+    return route => [route];
+  }
+
   const getMiddleware = route => {
     const chain = getChain(route);
     const m = chain.map(s => {
