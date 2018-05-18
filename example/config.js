@@ -1,12 +1,13 @@
 import { resolve } from 'path'
 
 const uploadDir = resolve(__dirname, 'upload')
+const routesDir = resolve(__dirname, 'routes')
 
 const sessionKey = 'secret-key'
 const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost:27017/idio'
 const PORT = process.env.PORT || 5000
 
-const T = {
+export default {
   databaseURL: DATABASE_URL,
   port: PORT,
   middleware: {
@@ -45,4 +46,16 @@ const T = {
   },
 }
 
-export default T
+export const routesConfig = {
+  dir: routesDir,
+  defaultImports: true,
+  aliases: {
+    get: {
+      '/index': ['/'],
+    },
+  },
+  middleware: {
+    get: route => ['session', route],
+    post: route => ['bodyparser', route],
+  },
+}

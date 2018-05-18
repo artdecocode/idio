@@ -1,5 +1,6 @@
 import { readDirStructure } from 'wrote'
 import { resolve } from 'path'
+import RoutesConfig from '../types/RoutesConfig' // eslint-disable-line
 
 const filterJsx = route => /\.jsx?$/.test(route)
 
@@ -113,4 +114,52 @@ export const initRoutes = async (dir, router, {
   }, {})
 
   return methods
+}
+
+/**
+ * Initialise routes.
+ * @param {RoutesConfig} routesConfig Routes configuration object.
+ * @param {Middleware} appMiddleware Set up middleware map.
+ * @param {Router} router Instance of koa-router
+ */
+export const initRoutes2 = async ({
+  dir,
+  middleware = {},
+  filter = filterJsx,
+  defaultImports = true,
+  aliases = {},
+} = {}, appMiddleware, router) => {
+  const methods = await readRoutes(dir, { filter, defaultImports })
+
+  Object.keys(methods).reduce((acc, method) => {
+    const routes = methods[method]
+    const getMiddleware = makeGetMiddleware(method, middleware, appMiddleware)
+    const methodAliases = aliases[method]
+    const r = addRoutes(routes, method, router, getMiddleware, methodAliases)
+    return {
+      ...acc,
+      [method]: r,
+    }
+  }, {})
+
+  return methods
+}
+
+const makeGetMiddleware = (method, middleware, appMiddleware) => {
+  /**
+   * A function specific for each method which returns full middleware chain for routes. The returned array consists of strings which are keys in the appMiddleware object.
+   * @type {(route: function) => string[]}
+   */
+  const getChain = middleware[method]
+  const getMiddleware = (route) => {
+    const chain = getChain(route)
+    const m = chain.map((s) => {
+      if (typeof s == 'string') {
+        return appMiddleware[s]
+      }
+      return s
+    })
+    return m
+  }
+  return getMiddleware
 }

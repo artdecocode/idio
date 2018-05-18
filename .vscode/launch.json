@@ -18,7 +18,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Zoroaster Dev",
-      "program": "${workspaceFolder}/../../packages/zoroaster/bin/zoroaster.js",
+      "program": "${workspaceFolder}/node_modules/.bin/zoroaster",
       "env": {
         "ZOROASTER_TIMEOUT": "9999999"
       },
@@ -32,7 +32,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/app/index.js",
+      "program": "${workspaceFolder}/example/index.js",
       "env": {
         "BABEL_ENV": "test"
       },
