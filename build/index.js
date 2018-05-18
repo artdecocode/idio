@@ -44,9 +44,10 @@ async function _default(config, routesConfig) {
     middleware,
     connect
   } = res;
+  let methods;
 
   if (routesConfig) {
-    await (0, _routes.initRoutes2)(routesConfig, middleware, router);
+    methods = await (0, _routes.initRoutes2)(routesConfig, middleware, router);
     const routes = router.routes();
     app.use(routes);
   }
@@ -54,7 +55,8 @@ async function _default(config, routesConfig) {
   return {
     url,
     app,
-    connect
+    connect,
+    methods
   };
 }
 /**
