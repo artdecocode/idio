@@ -7,6 +7,7 @@
   "presets": [
     "@babel/preset-react"
   ],
+  "sourceMaps": true,
   "env": {
     "test": {
       "retainLines": true

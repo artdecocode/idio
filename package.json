@@ -52,7 +52,7 @@
     "eslint-config-artdeco": "1.0.0",
     "eslint-plugin-react": "7.8.2",
     "rqt": "1.1.0",
-    "snapshot-context": "1.1.6",
+    "snapshot-context": "1.1.7",
     "yarn-s": "1.1.0",
     "zoroaster": "2.0.0"
   },

@@ -1,13 +1,27 @@
 import { ok } from 'zoroaster/assert'
 import rqt from 'rqt'
+import snapshotContext, { SnapshotContext } from 'snapshot-context' // eslint-disable-line no-unused-vars
 import idio from '../../src'
 import context, { Context } from '../context' // eslint-disable-line no-unused-vars
 
-/** @type {Object.<string, (ctx: Context)>} */
+let app
+/** @type {Object.<string, (ctx: Context, sctx: SnapshotContext)>} */
 const t = {
-  context,
-  async 'starts the server'({ routesJsx }) {
-    const { url, app, methods, router } = await idio({
+  context:[
+    context,
+    snapshotContext,
+    function() { // after each
+      this._destroy = () => {
+        if (app) {
+          app.destroy()
+          app = null
+        }
+      }
+    },
+  ],
+  async 'starts the server'({ routesJsx, snapshotDir }, { setDir, test }) {
+    setDir(snapshotDir)
+    const { url, methods, router, app: a } = await idio({
       port: 0,
       autoConnect: false,
       middleware: {
@@ -24,12 +38,12 @@ const t = {
         },
       },
     })
+    app = a
     const res = await rqt(url)
-    console.log(res)
     ok(/MAIN PAGE/.test(res))
     ok(methods)
     ok(router)
-    app.destroy()
+    await test('main-page.html', res)
   },
 }
 
