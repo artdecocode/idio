@@ -120,3 +120,4 @@ async function startApp(config = {}) {
     })
   };
 }
+//# sourceMappingURL=start-app.js.map

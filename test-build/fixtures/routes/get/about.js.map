@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../test/fixtures/routes/get/about.js"],"names":["module","exports","ctx","body"],"mappings":";;AAAAA,OAAOC,OAAP,GAAiB,MAAOC,GAAP,IAAe;AAC9BA,MAAIC,IAAJ,GAAW,UAAX;AACD,CAFD","sourcesContent":["module.exports = async (ctx) => {\n  ctx.body = 'About Us'\n}\n"],"file":"about.js"}

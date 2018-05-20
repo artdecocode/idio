@@ -6,3 +6,4 @@ module.exports = async ctx => {
   } = ctx.request.body;
   ctx.body = `test default post request: ${message}`;
 };
+//# sourceMappingURL=test.js.map

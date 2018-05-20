@@ -138,3 +138,4 @@ async function setupMiddleware(middleware = {}, app) {
   }, {});
   return res;
 }
+//# sourceMappingURL=setup-middleware.js.map

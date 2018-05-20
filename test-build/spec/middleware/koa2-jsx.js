@@ -68,3 +68,4 @@ const generatorTestSuite = {
 };
 var _default = generatorTestSuite;
 exports.default = _default;
+//# sourceMappingURL=koa2-jsx.js.map

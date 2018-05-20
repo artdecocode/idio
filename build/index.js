@@ -56,7 +56,8 @@ async function _default(config, routesConfig) {
     url,
     app,
     connect,
-    methods
+    methods,
+    router
   };
 }
 /**
@@ -110,3 +111,4 @@ async function _default(config, routesConfig) {
  * @property {MiddlewareConfig} [middleware]
  * @property {boolean} [autoConnect=true] Whether to automatically connect to the database.
  */
+//# sourceMappingURL=index.js.map

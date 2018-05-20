@@ -89,3 +89,4 @@ const compressTestSuite = {
 };
 var _default = compressTestSuite;
 exports.default = _default;
+//# sourceMappingURL=compress.js.map

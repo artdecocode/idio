@@ -14,3 +14,4 @@ var _default = () => async (ctx, next) => {
 };
 
 exports.default = _default;
+//# sourceMappingURL=check-auth.js.map

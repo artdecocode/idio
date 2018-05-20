@@ -12,3 +12,4 @@ var _default = async (ctx, next) => {
 };
 
 exports.default = _default;
+//# sourceMappingURL=index.js.map

@@ -26,3 +26,4 @@ async function createApp(config, database) {
     middleware
   };
 }
+//# sourceMappingURL=create-app.js.map

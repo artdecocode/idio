@@ -28,3 +28,4 @@ exports.default = void 0;
 const RoutesConfig = {};
 var _default = RoutesConfig;
 exports.default = _default;
+//# sourceMappingURL=RoutesConfig.js.map

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../test/fixtures/routes/get/test.js"],"names":["module","exports","ctx","body"],"mappings":";;AAAAA,OAAOC,OAAP,GAAiB,MAAOC,GAAP,IAAe;AAC9BA,MAAIC,IAAJ,GAAW,oBAAX;AACD,CAFD","sourcesContent":["module.exports = async (ctx) => {\n  ctx.body = 'test dynamic route'\n}\n"],"file":"test.js"}

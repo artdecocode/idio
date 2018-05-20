@@ -38,3 +38,4 @@ async function generate(url, pages = {}) {
   }, {});
   return mv;
 }
+//# sourceMappingURL=index.js.map

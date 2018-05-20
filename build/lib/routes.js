@@ -211,3 +211,4 @@ const makeGetMiddleware = (method, middleware, appMiddleware) => {
 
   return getMiddleware;
 };
+//# sourceMappingURL=routes.js.map
