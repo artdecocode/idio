@@ -8,6 +8,7 @@ const t = {
   context,
   async 'starts the server'({ routesJsx }) {
     const { url, app, methods, router } = await idio({
+      port: 0,
       autoConnect: false,
       middleware: {
         koa2Jsx: {
