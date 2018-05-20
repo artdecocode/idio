@@ -23,7 +23,7 @@ export default async function (config, routesConfig) {
     app.use(routes)
   }
 
-  return { url, app, connect, methods }
+  return { url, app, connect, methods, router }
 }
 
 /**

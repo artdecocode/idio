@@ -7,7 +7,7 @@ import context, { Context } from '../context' // eslint-disable-line no-unused-v
 const t = {
   context,
   async 'starts the server'({ routesJsx }) {
-    const { url, app, methods } = await idio({
+    const { url, app, methods, router } = await idio({
       autoConnect: false,
       middleware: {
         koa2Jsx: {
@@ -27,6 +27,7 @@ const t = {
     console.log(res)
     ok(/MAIN PAGE/.test(res))
     ok(methods)
+    ok(router)
     app.destroy()
   },
 }
