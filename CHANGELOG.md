@@ -1,3 +1,11 @@
+## 20 May 2018
+
+### 2.5.2
+
+- [build] add source maps.
+- [feature] return router from the main function.
+- [tests] write a `snapshot-context` test.
+
 ## 18 May 2018
 
 ### 2.5.1
