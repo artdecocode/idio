@@ -1,6 +1,6 @@
 {
   "name": "idio",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "A web-server in koa2 with MongoDB connection",
   "main": "build",
   "scripts": {
