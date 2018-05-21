@@ -269,20 +269,92 @@ await idio({
 })
 ```
 
-## Watching Routes Updates
+## idio-dev
 
-If you use `initRoutes`, for development purposes you can pass the returned object to the `watchRoutes` function from `idio-dev` which allows to perform hot route reload without restarting the whole server.
+To separate the server from the developer environment, `idio-dev` is created. It has a method to watch routes updates to run on the server, and also allows to compile JS bundles for the browser.
+
+```
+yarn add -D -E idio
+```
+
+### Watching Bundles
+
+Bundles for the client can be compiled with `idio-dev` using `watchBundles`. The method will call `browserify` with `watchify` and `babelify` to transpile files and put them in the required directory (which can be served by a `koa-static` middleware).
 
 ```js
+import { watchBundles } from 'idio-dev'
+
+const STATIC = resolve(__dirname, 'static')
+const from = resolve(__dirname, 'scripts')
+const to = resolve(STATIC, 'scripts')
+
+if (!test && !production) await watchBundles({
+  from, to,
+  babelify: {
+    babelrc: false,
+    plugins: [
+      '@babel/plugin-transform-modules-commonjs',
+      '@babel/plugin-proposal-object-rest-spread',
+    ],
+    presets: [
+      '@babel/preset-react',
+    ],
+  },
+})
+```
+
+
+### Watching Routes
+
+If you use `initRoutes`, for development purposes you can pass returned data to the `watchRoutes` function from `idio-dev` which allows to perform hot route reload without restarting the whole server.
+
+```js
+import idio from 'idio'
 import { watchRoutes } from 'idio-dev'
 
-const { methods } = await idio(config, routesConfig)
-watchRoutes(methods, dir, router, defaultImports, aliases)
+const ROUTES = resolve(__dirname, 'routes')
+
+(async () => {
+  const aliases = {
+    get: {
+      '/index': ['/'],
+    },
+  }
+
+  const { url, app, methods, router } = await idio({
+    autoConnect: false,
+    middleware: {
+      static: {
+        function(_, c) {
+          return serve(STATIC, c)
+        },
+        config: {
+          maxage: production ? 1000 * 60 * 60 * 24 * 10 : 0,
+        },
+        use: true,
+      },
+    },
+  }, {
+    dir: ROUTES,
+    aliases,
+  })
+
+  await watchRoutes({
+    dir: ROUTES,
+    methods,
+    router,
+    aliases,
+    url,
+  })
+  return { app, url }
+})
 ```
 
 ```sh
-watching idio/routes routes directory
+http://localhost:5000/ip
+  src/routes/get/ip.jsx
 # update routes/ip
+⌁ src/routes/get/ip.jsx
 > hot reloaded GET /ip
 ```
 
