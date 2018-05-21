@@ -1,5 +1,11 @@
 ## 20 May 2018
 
+### 2.5.3
+
+- [doc] better readme for the `idio-dev` section.
+
+## 20 May 2018
+
 ### 2.5.2
 
 - [build] add source maps.
