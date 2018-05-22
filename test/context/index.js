@@ -4,6 +4,17 @@ import { startApp } from '../../src'
 import { AppReturn, Config } from '../../src/types' // eslint-disable-line no-unused-vars
 
 const SNAPSHOT_DIR = resolve(__dirname, '../snapshots')
+const STATIC = resolve(__dirname, '../fixtures/static')
+const STATIC2 = resolve(__dirname, '../fixtures/static2')
+
+const readStaticFixture = async () => {
+  const dracula = await read(resolve(STATIC, 'chapter2.txt'))
+  return dracula
+}
+const readStaticFixture2 = async () => {
+  const dracula = await read(resolve(STATIC2, 'chapter3.txt'))
+  return dracula
+}
 
 /**
  * A context which can start a server by passing it a config. The server will
@@ -16,6 +27,8 @@ export default async function context() {
   this.routesDirModules = resolve(__dirname, '../fixtures/routes-modules')
   this.routesDirWithFiles = resolve(__dirname, '../fixtures/routes-with-files')
   this.snapshotDir = SNAPSHOT_DIR
+  this.staticDir = STATIC
+  this.staticDir2 = STATIC2
 
   /**
    * Start a server
@@ -33,11 +46,13 @@ export default async function context() {
     const dracula = await read(resolve(__dirname, '../fixtures/chapter1.txt'))
     return dracula
   }
+  this.readStaticFixture = readStaticFixture
+  this.readStaticFixture2 = readStaticFixture2
+
   this._destroy = async () => {
     if (app) await app.destroy()
   }
 }
-
 
 /**
  * @typedef {Object} Context
@@ -53,6 +68,10 @@ export default async function context() {
  * @property {string} routesDirModules
  * @property {string} routesDirWithFiles
  * @property {string} snapshotDir Directory for snapshots.
+ * @property {readStaticFixture} readStaticFixture Read chapter 2.
+ * @property {readStaticFixture2} readStaticFixture2 Read chapter 3.
+ * @property {STATIC} staticDir Static dir.
+ * @property {STATIC2} staticDir2 Static dir 2.
  */
 
 

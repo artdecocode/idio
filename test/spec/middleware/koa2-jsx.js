@@ -15,7 +15,7 @@ const page = {
 }
 
 /** @type {Object.<string, (api: Context, sApi: SnapshotContext)>} */
-const generatorTestSuite = {
+const T = {
   context: [
     context,
     snapshotContext,
@@ -66,4 +66,4 @@ const generatorTestSuite = {
   },
 }
 
-export default generatorTestSuite
+export default T

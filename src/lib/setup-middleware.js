@@ -7,13 +7,35 @@ import { ensurePath } from 'wrote'
 import { join, resolve } from 'path'
 import koa2Jsx, { wireframe as koa2Wireframe, bootstrap } from 'koa2-jsx'
 import compress from 'koa-compress'
+import serve from 'koa-static'
+import compose from 'koa-compose'
 import { Z_SYNC_FLUSH } from 'zlib'
-
+import Mount from 'koa-mount'
 import checkAuth from './check-auth'
 
-function setupCompress(app, config) {
+function setupStatic(app, config, {
+  root = [],
+  maxage,
+  mount,
+}) {
+  const roots = Array.isArray(root) ? root : [root]
+  const m = roots.map((r) => {
+    const fn = serve(r, {
+      maxage,
+      ...config,
+    })
+    return fn
+  })
+  const c = compose(m)
+  if (mount) return Mount(mount, c)
+  return c
+}
+
+function setupCompress(app, config, {
+  threshold = 1024,
+}) {
   const fn = compress({
-    threshold: 1024,
+    threshold,
     flush: Z_SYNC_FLUSH,
     ...config,
   })
@@ -74,6 +96,7 @@ const map = {
   checkauth: setupCheckAuth,
   logger: setupLogger,
   koa2Jsx: setupKoa2Jsx,
+  static: setupStatic,
 }
 
 async function initMiddleware(name, conf, app) {

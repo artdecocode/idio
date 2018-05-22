@@ -143,6 +143,7 @@ A simple middleware which throws if `ctx.session.user` is not set.
 
 | property | description                                 | default | required |
 |----------|---------------------------------------------|---------|----------|
+| threshold     | Minimum response size in bytes to compress. | 1024       | -     |
 | _config_     | `koa-compress` configuration | {}       | -     |
 
 #### koa2Jsx
@@ -156,6 +157,17 @@ A simple middleware which throws if `ctx.session.user` is not set.
 | static     | Whether to use `staticNodeStreamRender` rather than `nodeStreamRender` from `react` package. It will strip `react`'s metadata required for hydration. Set to this to `false` when client-side `react` is also used. | true       | -     |
 | pretty     | Return formatted HTML (as a string and not stream, therefore slower) | false       | -     |
 | _config_     | `koa2-jsx` configuration | {}       | -     |
+
+#### static
+
+[`koa-static`](https://github.com/koajs/static) to serve static files.
+
+| property | description                                 | default | required |
+|----------|---------------------------------------------|---------|----------|
+| root     | Root directory as a string or directories as an array of strings. | -       | true     |
+| mount     | Path from which files will be served | `/`       | -     |
+| maxage     | Controls caching time. | 0       | -     |
+| _config_     | `koa-static` configuration | {}       | -     |
 
 #### Custom Middleware
 

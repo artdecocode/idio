@@ -11,11 +11,10 @@ function assignRoute(app, url, router, path, body) {
   return `${url}${path}`
 }
 
-const compressTestSuite = {
+/** @type {Object.<string, (api: Context)>} */
+const T = {
   context,
-  /** @param {Context} api */
-  async 'should use compression'(api) {
-    const { start, readFixture } = api
+  async 'uses compression'({ start, readFixture }) {
     const body = await readFixture()
     const { app, url, router } = await start({
       middleware: {
@@ -32,7 +31,7 @@ const compressTestSuite = {
     const actual = gunzipSync(res).toString()
     equal(actual, body)
   },
-  async 'should pass threshold to the constructor'({ start, readFixture }) {
+  async 'passes threshold to the constructor'({ start, readFixture }) {
     const body = await readFixture()
     const { app, url, router } = await start({
       middleware: {
@@ -49,4 +48,4 @@ const compressTestSuite = {
   },
 }
 
-export default compressTestSuite
+export default T
