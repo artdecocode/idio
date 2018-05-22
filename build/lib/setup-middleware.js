@@ -41,9 +41,13 @@ function setupCompress(app, config) {
 }
 
 function setupKoa2Jsx(app, config, {
-  wireframe: useWireframe
+  wireframe,
+  pretty = false,
+  static: _static = true
 }) {
-  const fn = (0, _koa2Jsx.default)({ ...(useWireframe ? _koa2Jsx.wireframe : {}),
+  const fn = (0, _koa2Jsx.default)({ ...(wireframe ? _koa2Jsx.wireframe : {}),
+    static: _static,
+    pretty,
     ...config
   });
   return fn;
