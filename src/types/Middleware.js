@@ -9,8 +9,10 @@
  * @typedef {Object} Koa2JSX
  * @property {boolean} use Use middleware on every page (calls app.use())
  * @property {Koa2JsxConfig} [config] Middleware configuration
- * @property {boolean} wireframe Whether to set up a wireframe website.
- * @property {boolean} bootstrap Whether to add Bootstrap 4.
+ * @property {boolean} wireframe Whether to set up a wireframe website. Default false.
+ * @property {boolean} [static=true] Whether to render static node stream (without hydration data). Default true. Set to false for universal applications.
+ * @property {boolean} [pretty=false] Pretty print HTML. Response will be served as a string and not a stream. Default false.
+ * @property {boolean} [bootstrap=false] Add Bootstrap 4 to the wireframe. Default false.
 
  * @typedef ISignature
  * @property {boolean} use

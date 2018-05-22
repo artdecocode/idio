@@ -5,7 +5,7 @@ import bodyParser from 'koa-bodyparser'
 import logger from 'koa-logger'
 import { ensurePath } from 'wrote'
 import { join, resolve } from 'path'
-import koa2Jsx, { wireframe, bootstrap } from 'koa2-jsx'
+import koa2Jsx, { wireframe as koa2Wireframe, bootstrap } from 'koa2-jsx'
 import compress from 'koa-compress'
 import { Z_SYNC_FLUSH } from 'zlib'
 
@@ -19,9 +19,15 @@ function setupCompress(app, config) {
   })
   return fn
 }
-function setupKoa2Jsx(app, config, { wireframe: useWireframe }) {
+function setupKoa2Jsx(app, config, {
+  wireframe,
+  pretty = false,
+  static: _static = true,
+}) {
   const fn = koa2Jsx({
-    ...(useWireframe ? wireframe : {}),
+    ...(wireframe ? koa2Wireframe : {}),
+    static: _static,
+    pretty,
     ...config,
   })
   return fn

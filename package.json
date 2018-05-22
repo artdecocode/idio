@@ -59,14 +59,14 @@
   "dependencies": {
     "erotic": "1.1.0",
     "koa": "2.5.1",
-    "koa-bodyparser": "4.2.0",
+    "koa-bodyparser": "4.2.1",
     "koa-compress": "3.0.0",
     "koa-csrf": "3.0.6",
     "koa-logger": "3.2.0",
     "koa-multer": "1.0.2",
     "koa-router": "7.4.0",
     "koa-session": "5.8.1",
-    "koa2-jsx": "1.0.1",
+    "koa2-jsx": "1.2.0",
     "mongoose": "5.1.1",
     "server-destroy": "1.0.1",
     "wrote": "1.4.0"

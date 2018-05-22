@@ -98,6 +98,7 @@ export default {
 | property | description                                 | default | required |
 |----------|---------------------------------------------|---------|----------|
 | keys     | A set of keys to be installed in `app.keys` | -       | true     |
+| _config_     | `koa-session` configuration | {}       | -     |
 
 #### multer
 
@@ -106,14 +107,23 @@ export default {
 | property | description                                 | default | required |
 |----------|---------------------------------------------|---------|----------|
 | config.dest     | An upload directory which will be created on start. | -       | true     |
+| _config_     | `koa-multer` configuration | {}       | -     |
 
 #### csrf
 
 [`koa-csrf`](https://github.com/koajs/csrf) for prevention against CSRF attacks.
 
+| property | description                                 | default | required |
+|----------|---------------------------------------------|---------|----------|
+| _config_     | `koa-csrf` configuration | {}       | -     |
+
 #### bodyparser
 
 [`koa-bodyparser`](https://github.com/koajs/body-parser) to parse data sent to the server.
+
+| property | description                                 | default | required |
+|----------|---------------------------------------------|---------|----------|
+| _config_     | `koa-bodyparser` configuration | {}       | -     |
 
 #### checkauth
 
@@ -123,9 +133,17 @@ A simple middleware which throws if `ctx.session.user` is not set.
 
 [`koa-logger`](https://github.com/koajs/logger) to log requests.
 
+| property | description                                 | default | required |
+|----------|---------------------------------------------|---------|----------|
+| _config_     | `koa-logger` configuration | {}       | -     |
+
 #### compress
 
 [`koa-compress`](https://github.com/koajs/compress) to apply compression.
+
+| property | description                                 | default | required |
+|----------|---------------------------------------------|---------|----------|
+| _config_     | `koa-compress` configuration | {}       | -     |
 
 #### koa2Jsx
 
@@ -133,8 +151,11 @@ A simple middleware which throws if `ctx.session.user` is not set.
 
 | property | description                                 | default | required |
 |----------|---------------------------------------------|---------|----------|
-| wireframe     | Whether to use a wireframe. | false       | false     |
-| bootstrap     | Whether to include bootstrap. | false       | false     |
+| wireframe     | Whether to use a default wireframe. | false       | -     |
+| bootstrap     | Whether to include bootstrap (when using wireframe). | false       | -     |
+| static     | Whether to use `staticNodeStreamRender` rather than `nodeStreamRender` from `react` package. It will strip `react`'s metadata required for hydration. Set to this to `false` when client-side `react` is also used. | true       | -     |
+| pretty     | Return formatted HTML (as a string and not stream, therefore slower) | false       | -     |
+| _config_     | `koa2-jsx` configuration | {}       | -     |
 
 #### Custom Middleware
 
