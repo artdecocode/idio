@@ -76,6 +76,32 @@ const T = {
     const res2 = await rqt(fullUrl2)
     equal(res2, body2)
   },
+  async 'can specify multiple configurations'({
+    start, staticDir, staticDir2, readStaticFixture, readStaticFixture2,
+  }) {
+    const body = await readStaticFixture()
+    const body2 = await readStaticFixture2()
+    const { url } = await start({
+      middleware: {
+        static: [
+          {
+            use: true,
+            root: staticDir,
+          },
+          {
+            use: true,
+            root: staticDir2,
+          },
+        ],
+      },
+    })
+    const fullUrl = `${url}/chapter2.txt`
+    const res = await rqt(fullUrl)
+    equal(res, body)
+    const fullUrl2 = `${url}/chapter3.txt`
+    const res2 = await rqt(fullUrl2)
+    equal(res2, body2)
+  },
 }
 
 export default T

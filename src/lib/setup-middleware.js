@@ -101,7 +101,7 @@ const map = {
 
 async function initMiddleware(name, conf, app) {
   const fn = typeof conf.function == 'function' ? conf.function : map[name]
-  if (typeof fn !== 'function') {
+  if (typeof fn != 'function') {
     throw new Error(`Expecting function for ${name} middleware`)
   }
   const { use, config = {}, ...rest } = conf
@@ -118,11 +118,19 @@ async function initMiddleware(name, conf, app) {
 export default async function setupMiddleware(middleware = {}, app) {
   const res = await Object.keys(middleware)
     .reduce(async (acc, name) => {
-      const res = await acc
+      const accRes = await acc
       const conf = middleware[name]
-      const installed = await initMiddleware(name, conf, app)
+      let installed
+      if (Array.isArray(conf)) {
+        const p = conf.map(async (c) => {
+          await initMiddleware(name, c, app)
+        })
+        installed = await Promise.all(p)
+      } else {
+        installed = await initMiddleware(name, conf, app)
+      }
       return {
-        ...res,
+        ...accRes,
         [name]: installed,
       }
     }, {})
