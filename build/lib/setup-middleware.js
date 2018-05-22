@@ -23,7 +23,13 @@ var _koa2Jsx = _interopRequireWildcard(require("koa2-jsx"));
 
 var _koaCompress = _interopRequireDefault(require("koa-compress"));
 
+var _koaStatic = _interopRequireDefault(require("koa-static"));
+
+var _koaCompose = _interopRequireDefault(require("koa-compose"));
+
 var _zlib = require("zlib");
+
+var _koaMount = _interopRequireDefault(require("koa-mount"));
 
 var _checkAuth = _interopRequireDefault(require("./check-auth"));
 
@@ -31,9 +37,29 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function setupCompress(app, config) {
+function setupStatic(app, config, {
+  root = [],
+  maxage,
+  mount
+}) {
+  const roots = Array.isArray(root) ? root : [root];
+  const m = roots.map(r => {
+    const fn = (0, _koaStatic.default)(r, {
+      maxage,
+      ...config
+    });
+    return fn;
+  });
+  const c = (0, _koaCompose.default)(m);
+  if (mount) return (0, _koaMount.default)(mount, c);
+  return c;
+}
+
+function setupCompress(app, config, {
+  threshold = 1024
+}) {
   const fn = (0, _koaCompress.default)({
-    threshold: 1024,
+    threshold,
     flush: _zlib.Z_SYNC_FLUSH,
     ...config
   });
@@ -103,7 +129,8 @@ const map = {
   bodyparser: setupBodyParser,
   checkauth: setupCheckAuth,
   logger: setupLogger,
-  koa2Jsx: setupKoa2Jsx
+  koa2Jsx: setupKoa2Jsx,
+  static: setupStatic
 };
 
 async function initMiddleware(name, conf, app) {

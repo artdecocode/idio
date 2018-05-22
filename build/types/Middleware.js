@@ -26,6 +26,13 @@ exports.default = void 0;
  * @property {Object} config
  * @property {Object} [rest]
 
+ * @typedef {Object} Static
+ * @property {boolean} [use=false] Use this middleware for every request.
+ * @property {string|string[]} root Root or multiple roots from which to serve files.
+ * @property {string} [mount] Path from which to serve files. Defaults to `/`.
+ * @property {number} [maxage=0] How long to cache file for. Defaults to no caching.
+ * @property {object} [config] koa-static configuration.
+
  * @typedef {Object} MiddlewareConfig
  * @property {ISignature} [session]
  * @property {ISignature} [multer]
@@ -34,6 +41,7 @@ exports.default = void 0;
  * @property {ISignature} [bodyparser]
  * @property {ISignature} [checkauth]
  * @property {ISignature} [logger]
+ * @property {Static} [static]
  * @property {Koa2JSX} [koa2Jsx]
  */
 
