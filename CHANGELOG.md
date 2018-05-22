@@ -1,5 +1,9 @@
 ## 22 May 2018
 
+### 2.7.0
+
+- [feature] Allow to specify multiple middleware configurations.
+
 ### 2.6.0
 
 - [feature] Support `koa-static`.
