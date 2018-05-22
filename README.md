@@ -91,6 +91,10 @@ export default {
 | config   | Configuration object expected by the middleware constructor.                  | {}      |
 | ...props | Any additional specific properties (see individual middleware configuration). |         |
 
+It is possible to pass multiple configurations as an array for a single type of middleware, if multiple instances of it need to be created (e.g., for `static`).
+
+<!-- This might not work with routes initialisation when passing getMiddleware function. -->
+
 #### session
 
 [`koa-session`](https://github.com/koajs/session) for handling sessions.
