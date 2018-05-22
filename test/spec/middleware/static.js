@@ -10,7 +10,6 @@ const T = {
     const body = await readStaticFixture()
     const { url } = await start({
       middleware: {
-        compress: { use: true },
         static: {
           use: true,
           root: staticDir,
@@ -25,7 +24,6 @@ const T = {
     const body = await readStaticFixture()
     const { url } = await start({
       middleware: {
-        compress: { use: true },
         static: {
           use: true,
           root: staticDir,
@@ -44,7 +42,6 @@ const T = {
     const body2 = await readStaticFixture2()
     const { url } = await start({
       middleware: {
-        compress: { use: true },
         static: {
           use: true,
           root: [staticDir, staticDir2],
@@ -65,7 +62,6 @@ const T = {
     const body2 = await readStaticFixture2()
     const { url } = await start({
       middleware: {
-        compress: { use: true },
         static: {
           use: true,
           root: [staticDir, staticDir2],

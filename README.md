@@ -169,6 +169,27 @@ A simple middleware which throws if `ctx.session.user` is not set.
 | maxage     | Controls caching time. | 0       | -     |
 | _config_     | `koa-static` configuration | {}       | -     |
 
+```js
+import { resolve, dirname } from 'path'
+import idio from 'idio'
+
+const STATIC = resolve(__dirname, 'static')
+const react = resolve(dirname(require.resolve('react')), 'umd')
+
+(async () => {
+  const { url } = await idio({
+    middleware: {
+      static: {
+        use: true,
+        root: ['static', react],
+        mount: '/scripts',
+        maxage: process.env.NODE_ENV == 'production' ?  1000 * 60 * 60 * 24 * 10 : 0,
+      },
+    },
+  })
+})
+```
+
 #### Custom Middleware
 
 Other middleware can be passed as an object which has 3 properties:
