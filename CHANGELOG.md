@@ -1,3 +1,9 @@
+## 22 May 2018
+
+### 2.5.4
+
+- [feature] update `koa2-jsx` to allow to pass `static`.
+
 ## 20 May 2018
 
 ### 2.5.3
